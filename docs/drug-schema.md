@@ -18,6 +18,15 @@ This schema was revised after validating it end-to-end against sotorasib
 
 **Trials** (a drug has one or more trials; a single trial can span phases)
 - Trial name + registry ID (e.g. CodeBreaK 100, NCT03600883)
+- **Indication** — the disease this trial studied. First-class per trial: a
+  multi-indication drug (e.g. brepocitinib) runs different trials in different
+  diseases with different outcomes. `identity.indications` is the drug-level
+  union/summary; `trial.indication` is authoritative per study. Efficacy
+  records inherit indication via their trial.
+- **Sponsor(s)** — who ran this trial. First-class per trial because sponsorship
+  can differ across a drug's studies and transfer over time (brepocitinib's
+  early Phase 2s were Pfizer; dermatomyositis/SLE moved to Priovant). String or
+  list; `identity.sponsors` is the drug-level union.
 - Phase(s) the trial covers — may be a range (e.g. "1/2"), not a single phase
 - Start date, and status (ongoing / completed / terminated)
 

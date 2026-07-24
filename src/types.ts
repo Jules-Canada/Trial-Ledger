@@ -55,6 +55,12 @@ export interface Trial {
   id: string;
   name: string;
   registry_id: string;
+  /** The disease this trial studied. First-class: a drug can run trials in
+   *  many indications with different outcomes. Efficacy inherits via its trial. */
+  indication: string;
+  /** Who ran this trial. Per-trial because sponsorship can transfer over time
+   *  (e.g. brepocitinib: Pfizer → Priovant). */
+  sponsor: string | string[];
   phases: string[];
   start_date: string | null;
   status: string;

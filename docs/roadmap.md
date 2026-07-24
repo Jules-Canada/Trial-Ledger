@@ -48,10 +48,44 @@ from CLAUDE.md for that reason.
       Exercises the discontinuation branch + a metric that collapsed on
       confirmation (ORR 60% unconfirmed → 28% confirmed). Schema held with NO
       changes — validated clean. Status: draft-unverified.
-- [ ] Human spot-check rociletinib; confirm approx dates + TIGER-3 NCT
-- [ ] Create a blank record template + curation checklist (make drug #3-5 fast)
-- [ ] Add drugs #3-5 by hand, then reassess whether schema can freeze
+- [x] Drug #3 added: brepocitinib (Priovant/Pfizer) — non-oncology, TYK2/JAK1,
+      MULTI-INDICATION with mixed outcomes (dermatomyositis Phase 3 win under
+      FDA review; SLE Phase 2 failure; PsA/psoriasis Phase 2 wins). Endpoint-
+      agnostic model held for ACR20/PASI/SRI-4/TIS. Status: draft-unverified.
+- [x] Validator fix: allow unitless endpoints (unit "") — surfaced by TIS,
+      the first composite-score endpoint.
+- [x] Promoted indication + sponsor to first-class per-trial fields (schema doc
+      + validator + types + backfilled all 3 records). Sponsor is per-trial
+      because it transfers over a drug's life (brepocitinib: Pfizer → Priovant).
+- [x] Drug #4 added: emraclidine (Cerevel/AbbVie) — CNS/schizophrenia, M4 PAM.
+      Story: Phase 1b positive → Phase 2 EMPOWER-1/-2 failed to replicate (2024).
+      Exercises array-sponsor (Cerevel → AbbVie acquisition) + a failed-but-not-
+      formally-discontinued state. Status: draft-unverified.
+- [ ] Human spot-check rociletinib + brepocitinib + emraclidine (dates, NCTs, values)
+- [ ] Create a blank record template + curation checklist (make drug #4-5 fast)
+- [ ] Add drugs #4-5 by hand, then reassess whether schema can freeze
 - [ ] Only after ~5 drugs + frozen schema: consider CT.gov skeleton pre-fill
+
+## Schema findings from brepocitinib (need a decision before freezing)
+1. **Indication must be first-class.** A multi-indication drug's trials and
+   efficacy each belong to a *disease*; today `indication` is only a drug-level
+   array. Added `indication` on trials as an additive stopgap; needs a proper
+   schema + validator update (and it reshapes the view — the "signal" story is
+   per-indication, e.g. small-multiples by disease).
+2. **Discontinuation should be per-program, not drug-level.** Brepocitinib's SLE
+   program was halted while dermatomyositis advances to registration — the
+   top-level `discontinuation` field can't express "one indication dead, drug
+   alive." (Only one case so far; don't over-model yet.)
+3. **Third lifecycle state now present:** under-review (brepocitinib, PDUFA
+   Q3 2026) alongside approved (sotorasib) and discontinued (rociletinib).
+4. **Timeline enum lacks corporate events.** Emraclidine's Cerevel→AbbVie
+   acquisition (Aug 2024) has no event type — captured via per-trial sponsor
+   arrays instead. Add an `acquisition`/`corporate` event type only if the story
+   needs it on the timeline (one case so far; deferred).
+5. **Fourth lifecycle nuance:** failed-but-not-formally-discontinued
+   (emraclidine schizophrenia — Phase 2 missed, AbbVie 'evaluating'; AD-psychosis
+   Phase 1 still ongoing). `discontinuation: null` holds, but "in limbo" isn't
+   explicitly modeled.
 
 ## Frontend generality (deferred until more drugs exist)
 - The single-drug view is currently sotorasib-shaped: hardcoded per-drug

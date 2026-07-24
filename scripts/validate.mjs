@@ -69,6 +69,12 @@ function validateDrug(drug, errs) {
       if (!isStr(t.name)) errs.push(`${p}.name: missing`);
       if (!Array.isArray(t.phases) || t.phases.length === 0)
         errs.push(`${p}.phases: must be a non-empty array`);
+      if (!isStr(t.indication)) errs.push(`${p}.indication: missing`);
+      const okSponsor =
+        isStr(t.sponsor) ||
+        (Array.isArray(t.sponsor) && t.sponsor.length > 0 && t.sponsor.every(isStr));
+      if (!okSponsor)
+        errs.push(`${p}.sponsor: must be a non-empty string or string[]`);
       if (!(t.start_date === null || isStr(t.start_date)))
         errs.push(`${p}.start_date: must be a string or null`);
       validateSources(t.sources, `${p}.sources`, errs);
@@ -96,7 +102,8 @@ function validateDrug(drug, errs) {
       if (!isStr(r.phase)) errs.push(`${p}.phase: missing`);
       if (!isStr(r.endpoint)) errs.push(`${p}.endpoint: missing`);
       if (!isNumOrNull(r.value)) errs.push(`${p}.value: must be a number or null`);
-      if (!isStr(r.unit)) errs.push(`${p}.unit: missing (use "" if none)`);
+      // unit may be "" for unitless endpoints (e.g. composite scores like TIS)
+      if (typeof r.unit !== "string") errs.push(`${p}.unit: must be a string ("" if none)`);
       if (!ROLES.has(r.role)) errs.push(`${p}.role: invalid role "${r.role}"`);
       if (!isBoolOrNull(r.met)) errs.push(`${p}.met: must be true/false/null`);
       if (r.comparable !== undefined && typeof r.comparable !== "boolean")

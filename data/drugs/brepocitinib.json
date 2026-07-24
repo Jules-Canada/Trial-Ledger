@@ -1,0 +1,188 @@
+{
+  "id": "brepocitinib",
+  "_verification": {
+    "status": "draft-unverified",
+    "note": "Drug #3, non-oncology + MULTI-INDICATION stress test. Claude-drafted from web sources; human spot-check pending. Approximate dates (first-in-human ~2016, VALOR positive readout, NDA H1 2026) and some NCTs (esp. VALOR) to confirm. NOTE two schema findings surfaced by this drug — see docs/roadmap.md: (1) indication should be first-class on trials/efficacy, not just a drug-level array; (2) discontinuation is drug-level but SLE shows it should be per-program (the SLE program was halted while the drug advances in dermatomyositis). The `indication` field on each trial below is now a first-class per-trial field (promoted after this drug), alongside per-trial sponsor: Pfizer ran the early Phase 2s (psoriasis, PsA); Priovant ran VALOR (dermatomyositis) and SLE (JV formed 2021; SLE initiated under Pfizer, then transferred)."
+  },
+  "identity": {
+    "name": "Brepocitinib",
+    "codes": ["PF-06700841"],
+    "brand_name": "",
+    "sponsors": ["Priovant Therapeutics", "Pfizer"],
+    "modality": "small molecule",
+    "target": "TYK2 / JAK1",
+    "indications": [
+      "Dermatomyositis",
+      "Systemic lupus erythematosus (SLE)",
+      "Psoriatic arthritis",
+      "Plaque psoriasis",
+      "Ulcerative colitis",
+      "Alopecia areata",
+      "Hidradenitis suppurativa"
+    ]
+  },
+  "trials": [
+    {
+      "id": "valor",
+      "name": "VALOR (Phase 3, dermatomyositis)",
+      "registry_id": "NCT05437263",
+      "indication": "Dermatomyositis",
+      "sponsor": "Priovant Therapeutics",
+      "phases": ["3"],
+      "start_date": "2022-07",
+      "status": "completed",
+      "note": "Lead program. 52-week placebo-controlled Phase 3; positive. NCT to confirm.",
+      "sources": [
+        { "url": "https://investor.roivant.com/news-releases/news-release-details/roivant-and-priovant-announce-positive-phase-3-valor-study", "source_type": "press_release" }
+      ]
+    },
+    {
+      "id": "sle-p2",
+      "name": "Phase 2 dose-ranging, SLE",
+      "registry_id": "NCT03845517",
+      "indication": "Systemic lupus erythematosus (SLE)",
+      "sponsor": "Priovant Therapeutics",
+      "phases": ["2"],
+      "start_date": "2019-04",
+      "status": "terminated",
+      "note": "Failed primary (SRI-4) at 52 weeks; program NOT progressed in SLE. The drug itself continues in other indications — discontinuation here is program-level, not drug-level.",
+      "sources": [
+        { "url": "https://investor.roivant.com/news-releases/news-release-details/roivant-and-priovant-announce-results-phase-2-study-oral", "source_type": "press_release" }
+      ]
+    },
+    {
+      "id": "psa-p2b",
+      "name": "Phase 2b, psoriatic arthritis",
+      "registry_id": "NCT03963401",
+      "indication": "Psoriatic arthritis",
+      "sponsor": "Pfizer",
+      "phases": ["2"],
+      "start_date": "2019-06",
+      "status": "completed",
+      "note": "Positive; ACR20 met at week 16.",
+      "sources": [
+        { "url": "https://acrjournals.onlinelibrary.wiley.com/doi/10.1002/art.42519", "source_type": "journal" }
+      ]
+    },
+    {
+      "id": "pso-p2a",
+      "name": "Phase 2a, plaque psoriasis",
+      "registry_id": "NCT02969018",
+      "indication": "Plaque psoriasis",
+      "sponsor": "Pfizer",
+      "phases": ["2"],
+      "start_date": "2016-11",
+      "status": "completed",
+      "note": "Positive; significant PASI improvement vs placebo.",
+      "sources": [
+        { "url": "https://www.sciencedirect.com/science/article/pii/S0022202X20313798", "source_type": "journal" }
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "date": "2016-01",
+      "type": "first_in_human",
+      "confirmed": false,
+      "note": "Early Pfizer-era development; approximate. Phase 2 programs ran from ~2016 onward.",
+      "sources": [
+        { "url": "https://www.selleckchem.com/products/pf-06700841.html", "source_type": "other" }
+      ]
+    },
+    {
+      "date": "2021-11",
+      "type": "data_readout",
+      "trial": "psa-p2b",
+      "note": "Phase 2b psoriatic arthritis: ACR20 met vs placebo.",
+      "sources": [
+        { "url": "https://acrabstracts.org/abstract/efficacy-and-safety-of-brepocitinib-tyrosine-kinase-2-janus-kinase-1-inhibitor-for-the-treatment-of-active-psoriatic-arthritis-results-from-a-phase-2b-randomized-controlled-trial/", "source_type": "conference_abstract" }
+      ]
+    },
+    {
+      "date": "2023-11-27",
+      "type": "data_readout",
+      "trial": "sle-p2",
+      "note": "Phase 2 SLE: primary SRI-4 NOT met; highest placebo response seen in a major SLE study. SLE program halted.",
+      "sources": [
+        { "url": "https://www.healio.com/news/rheumatology/20231129/oral-brepocitinib-fails-to-meet-primary-endpoint-in-phase-2-lupus-study", "source_type": "other" }
+      ]
+    },
+    {
+      "date": "2025-01",
+      "type": "data_readout",
+      "trial": "valor",
+      "confirmed": false,
+      "note": "Phase 3 VALOR dermatomyositis: positive (30 mg). Exact announcement date to confirm.",
+      "sources": [
+        { "url": "https://investor.roivant.com/news-releases/news-release-details/roivant-and-priovant-announce-positive-phase-3-valor-study", "source_type": "press_release" }
+      ]
+    },
+    {
+      "date": "2026-01",
+      "type": "filing",
+      "note": "NDA for dermatomyositis submitted (H1 2026); FDA accepted with Priority Review; PDUFA target Q3 2026. As of Jul 2026 the drug is under FDA review — neither approved nor discontinued.",
+      "sources": [
+        { "url": "https://www.rheumatologyadvisor.com/news/fda-to-review-brepocitinib-for-treatment-of-dermatomyositis/", "source_type": "press_release" }
+      ]
+    }
+  ],
+  "efficacy": [
+    {
+      "trial": "valor",
+      "phase": "3",
+      "endpoint": "Total Improvement Score (TIS)",
+      "value": null,
+      "unit": "",
+      "role": "primary",
+      "met": true,
+      "comparator": "vs placebo, 30 mg dose (15 mg did not separate)",
+      "note": "Composite myositis response; met at 30 mg. Exact TIS value not yet captured. Non-oncology endpoint — proves endpoint-agnostic model outside cancer.",
+      "sources": [
+        { "url": "https://investor.roivant.com/news-releases/news-release-details/roivant-and-priovant-announce-positive-phase-3-valor-study", "source_type": "press_release" }
+      ]
+    },
+    {
+      "trial": "sle-p2",
+      "phase": "2",
+      "endpoint": "SRI-4 response (wk 52)",
+      "value": null,
+      "unit": "%",
+      "role": "primary",
+      "met": false,
+      "comparator": "vs placebo (not significant)",
+      "note": "Primary endpoint missed; confounded by the highest placebo response rate reported in a major SLE trial. Value not captured.",
+      "sources": [
+        { "url": "https://www.healio.com/news/rheumatology/20231129/oral-brepocitinib-fails-to-meet-primary-endpoint-in-phase-2-lupus-study", "source_type": "other" }
+      ]
+    },
+    {
+      "trial": "psa-p2b",
+      "phase": "2",
+      "endpoint": "ACR20 response (wk 16)",
+      "value": 74.6,
+      "unit": "%",
+      "role": "primary",
+      "met": true,
+      "comparator": "placebo 43.3%; 30 mg arm 66.7%",
+      "note": "60 mg arm shown; P=0.0006. Both active doses beat placebo.",
+      "sources": [
+        { "url": "https://acrjournals.onlinelibrary.wiley.com/doi/10.1002/art.42519", "source_type": "journal" }
+      ]
+    },
+    {
+      "trial": "pso-p2a",
+      "phase": "2",
+      "endpoint": "PASI75 response",
+      "value": null,
+      "unit": "%",
+      "role": "primary",
+      "met": true,
+      "comparator": "vs placebo (significant)",
+      "note": "Phase 2a plaque psoriasis: significant PASI improvement. Exact PASI75 value not captured.",
+      "sources": [
+        { "url": "https://www.sciencedirect.com/science/article/pii/S0022202X20313798", "source_type": "journal" }
+      ]
+    }
+  ],
+  "discontinuation": null
+}

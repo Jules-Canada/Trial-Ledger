@@ -1,0 +1,151 @@
+{
+  "id": "emraclidine",
+  "_verification": {
+    "status": "draft-unverified",
+    "note": "Drug #4, CNS/psychiatry stress test. Claude-drafted from web sources; human spot-check pending. Approximate dates (first-in-human ~2020, Phase 1b readout ~2021) and PANSS values to confirm; AD-psychosis Phase 1 NCT to confirm. Story: Phase 1b positive → Phase 2 EMPOWER-1/-2 failed to replicate (Nov 2024). Sponsorship transferred Cerevel → AbbVie (acquisition closed Aug 2024), captured via per-trial sponsor arrays. NEW finding: the timeline event-type enum has no home for corporate events like an acquisition — see docs/roadmap.md.",
+    "verified_on": null
+  },
+  "identity": {
+    "name": "Emraclidine",
+    "codes": ["CVL-231"],
+    "brand_name": "",
+    "sponsors": ["AbbVie", "Cerevel Therapeutics"],
+    "modality": "small molecule",
+    "target": "M4 muscarinic receptor (positive allosteric modulator)",
+    "indications": ["Schizophrenia", "Alzheimer's disease psychosis"]
+  },
+  "trials": [
+    {
+      "id": "ph1b",
+      "name": "Phase 1b (CVL-231)",
+      "registry_id": "NCT04787302",
+      "indication": "Schizophrenia",
+      "sponsor": "Cerevel Therapeutics",
+      "phases": ["1"],
+      "start_date": "2020-08",
+      "status": "completed",
+      "note": "Positive: statistically significant PANSS reduction vs placebo (Nature Medicine 2022). The signal that later failed to replicate in Phase 2.",
+      "sources": [
+        { "url": "https://www.globenewswire.com/news-release/2022/01/10/2363732/0/en/Cerevel-Therapeutics-to-Present-at-40th-Annual-JP-Morgan-Healthcare-Conference-Additional-Details-of-Phase-2-Program-for-Emraclidine-CVL-231-in-Schizophrenia-to-be-Presented.html", "source_type": "press_release" }
+      ]
+    },
+    {
+      "id": "empower-1",
+      "name": "EMPOWER-1 (Phase 2)",
+      "registry_id": "NCT05227690",
+      "indication": "Schizophrenia",
+      "sponsor": ["Cerevel Therapeutics", "AbbVie"],
+      "phases": ["2"],
+      "start_date": "2022-02",
+      "status": "completed",
+      "note": "Initiated by Cerevel; AbbVie at readout (acquisition closed Aug 2024). Missed primary PANSS endpoint at week 6 (10 mg / 30 mg; only slight improvement vs placebo).",
+      "sources": [
+        { "url": "https://news.abbvie.com/2024-11-11-AbbVie-Provides-Update-on-Phase-2-Results-for-Emraclidine-in-Schizophrenia", "source_type": "press_release" }
+      ]
+    },
+    {
+      "id": "empower-2",
+      "name": "EMPOWER-2 (Phase 2)",
+      "registry_id": "NCT05227703",
+      "indication": "Schizophrenia",
+      "sponsor": ["Cerevel Therapeutics", "AbbVie"],
+      "phases": ["2"],
+      "start_date": "2022-02",
+      "status": "completed",
+      "note": "Initiated by Cerevel; AbbVie at readout. Missed primary PANSS endpoint at week 6 (15 mg / 30 mg; low dose worsened symptoms vs placebo).",
+      "sources": [
+        { "url": "https://news.abbvie.com/2024-11-11-AbbVie-Provides-Update-on-Phase-2-Results-for-Emraclidine-in-Schizophrenia", "source_type": "press_release" }
+      ]
+    },
+    {
+      "id": "adp-ph1",
+      "name": "Phase 1, Alzheimer's disease psychosis",
+      "registry_id": "",
+      "indication": "Alzheimer's disease psychosis",
+      "sponsor": "AbbVie",
+      "phases": ["1"],
+      "start_date": "2024-01",
+      "status": "ongoing",
+      "note": "Separate indication, still running under AbbVie after the schizophrenia Phase 2 failure. No efficacy readout yet. NCT to confirm.",
+      "sources": [
+        { "url": "https://www.biospace.com/press-releases/abbvie-provides-update-on-phase-2-results-for-emraclidine-in-schizophrenia", "source_type": "press_release" }
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "date": "2020-08",
+      "type": "first_in_human",
+      "trial": "ph1b",
+      "confirmed": false,
+      "note": "Phase 1b in schizophrenia (approximate start).",
+      "sources": [
+        { "url": "https://www.globenewswire.com/news-release/2022/01/10/2363732/0/en/Cerevel-Therapeutics-to-Present-at-40th-Annual-JP-Morgan-Healthcare-Conference-Additional-Details-of-Phase-2-Program-for-Emraclidine-CVL-231-in-Schizophrenia-to-be-Presented.html", "source_type": "press_release" }
+      ]
+    },
+    {
+      "date": "2021-06",
+      "type": "data_readout",
+      "trial": "ph1b",
+      "confirmed": false,
+      "note": "Phase 1b positive: significant PANSS reduction vs placebo. Generated the excitement behind AbbVie's ~$8.7B Cerevel acquisition. Exact readout date to confirm.",
+      "sources": [
+        { "url": "https://www.globenewswire.com/news-release/2022/01/10/2363732/0/en/Cerevel-Therapeutics-to-Present-at-40th-Annual-JP-Morgan-Healthcare-Conference-Additional-Details-of-Phase-2-Program-for-Emraclidine-CVL-231-in-Schizophrenia-to-be-Presented.html", "source_type": "press_release" }
+      ]
+    },
+    {
+      "date": "2024-11-11",
+      "type": "data_readout",
+      "note": "EMPOWER-1 & EMPOWER-2 (n=372) both MISSED the primary PANSS endpoint at week 6 vs placebo. AbbVie shares fell ~12%; ~$3.5B charge. AbbVie 'analyzing data to determine next steps' — schizophrenia program's future uncertain, not formally discontinued.",
+      "sources": [
+        { "url": "https://news.abbvie.com/2024-11-11-AbbVie-Provides-Update-on-Phase-2-Results-for-Emraclidine-in-Schizophrenia", "source_type": "press_release" },
+        { "url": "https://www.clinicaltrialsarena.com/news/abbvie-stock-plummets-over-12-after-schizophrenia-drug-flops-in-phase-ii-trials/", "source_type": "other" }
+      ]
+    }
+  ],
+  "efficacy": [
+    {
+      "trial": "ph1b",
+      "phase": "1",
+      "endpoint": "PANSS total change (wk 6)",
+      "value": null,
+      "unit": "points",
+      "role": "primary",
+      "met": true,
+      "comparator": "vs placebo (statistically significant reduction; ~ -20 vs ~ -7, to confirm)",
+      "note": "Phase 1b positive (Nature Medicine 2022). Lower PANSS = improvement. Exact values to verify.",
+      "sources": [
+        { "url": "https://www.globenewswire.com/news-release/2022/01/10/2363732/0/en/Cerevel-Therapeutics-to-Present-at-40th-Annual-JP-Morgan-Healthcare-Conference-Additional-Details-of-Phase-2-Program-for-Emraclidine-CVL-231-in-Schizophrenia-to-be-Presented.html", "source_type": "press_release" }
+      ]
+    },
+    {
+      "trial": "empower-1",
+      "phase": "2",
+      "endpoint": "PANSS total change (wk 6)",
+      "value": null,
+      "unit": "points",
+      "role": "primary",
+      "met": false,
+      "comparator": "vs placebo (not significant; only slight improvement)",
+      "note": "Primary endpoint missed. Same endpoint as the Phase 1b row above — the signal did not replicate.",
+      "sources": [
+        { "url": "https://news.abbvie.com/2024-11-11-AbbVie-Provides-Update-on-Phase-2-Results-for-Emraclidine-in-Schizophrenia", "source_type": "press_release" }
+      ]
+    },
+    {
+      "trial": "empower-2",
+      "phase": "2",
+      "endpoint": "PANSS total change (wk 6)",
+      "value": null,
+      "unit": "points",
+      "role": "primary",
+      "met": false,
+      "comparator": "vs placebo (not significant; low dose worsened symptoms)",
+      "note": "Primary endpoint missed.",
+      "sources": [
+        { "url": "https://www.psychiatrictimes.com/view/emraclidine-for-schizophrenia-fails-to-meet-primary-endpoints-in-phase-2-empower-trials", "source_type": "other" }
+      ]
+    }
+  ],
+  "discontinuation": null
+}
