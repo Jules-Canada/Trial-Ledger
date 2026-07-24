@@ -1,50 +1,57 @@
 # Data Pipeline
 
-How drug records get built, verified, and validated. Complements
-docs/data-sources.md (where data comes from) and docs/drug-schema.md (shape).
+How drug records get built, trusted, and validated — designed to scale toward
+"every drug in development", where per-drug human verification is NOT feasible.
+
+## Trust model: provenance, not human sign-off
+Publishing is NOT gated on a human verifying every figure — that cannot scale
+to thousands of drugs. Trust comes instead from **traceable provenance +
+automated checks**:
+- every data point carries a `source` + `source_type` (see drug-schema.md);
+- `source_type` implies a **confidence tier** (primary evidence — journal /
+  registry / FDA — outranks topline press releases / abstracts);
+- the validator enforces structure; a provenance report summarizes coverage;
+- the UI surfaces provenance so the reader audits credibility themselves.
+
+Human review is an **optional spot-audit** (e.g. flagship drugs), never the
+gate. Confidence is *expressed and traceable*, not *asserted by a human stamp*.
 
 ## Artifact
-- One hand-authored JSON file per drug: `data/drugs/<drug-id>.json`.
-- Conforms to docs/drug-schema.md. Versioned in git. The app reads these
-  files directly — there is no live scraper at page load.
-- Every data point carries `source` (link + `source_type`). Capture is
-  expansive: press releases and abstracts are included, flagged by type,
-  not excluded. (See drug-schema.md "Sources".)
+- one JSON per drug: `data/drugs/<id>.json`, conforms to drug-schema.md, in git.
+- expansive capture: press releases / abstracts are included and flagged by
+  `source_type`, never excluded (see the capture-expansive principle).
 
-## Build loop (per drug)
-1. **Claude searches + drafts** — WebSearch/WebFetch across ClinicalTrials.gov,
-   press releases/IR, journals, Drugs@FDA. Fills the JSON, attaching a source
-   (link + source_type) to every data point. Flags conflicts and gaps.
-2. **Human verifies** — spot-checks each efficacy figure against its linked
-   source before the record is trusted. The per-point source link exists to
-   make this ~10-second, not a re-research.
-3. **Validate + commit** — run the schema validator (below); commit the JSON.
+## Stages: gather → author → publish
+1. **Gather (increasingly automated)**
+   - Skeleton: `npm run prefill NCT03600883 …` (scripts/ctgov-prefill.mjs) pulls
+     authoritative registry fields — phases, dates, sponsor, status, conditions,
+     enrollment. This replaces hand-entering *and* hand-verifying the skeleton
+     (the exact fields that were "to confirm" in our first drafts).
+   - Efficacy / timeline: curated from journals / PR / FDA, each with a
+     `source_type`. The registry does not carry topline efficacy.
+2. **Author**
+   - Fill the record from prefill stubs + curated efficacy. Set confidence via
+     `source_type`, not a human stamp.
+3. **Publish**
+   - `npm run validate` must pass (structure + provenance). Commit. No human
+     sign-off required; provenance travels with the data.
 
-Claude-drafted numbers are NOT ground truth until step 2. Risks: transposed
-digits, stale figures (e.g. sotorasib ORR 37% → 41% across readouts), or
-confident statements absent from the source. A record stays marked
-`draft-unverified` until a human clears it.
+## What automation is authoritative for — and what it isn't
+- CT.gov prefill: authoritative for the **skeleton** (identity, phases, dates,
+  sponsor, status, enrollment). NOT for efficacy.
+- Efficacy stays the judgment layer — **sourced and tiered, not human-verified
+  per figure**. When sources disagree, keep both and note it.
 
-## Division of labor
-- **Claude is good at:** finding trials, assembling the skeleton, pulling
-  candidate efficacy figures fast, drafting valid JSON, surfacing conflicts.
-- **Human owns:** confirming each efficacy figure against its cited source,
-  and adjudicating when sources disagree.
-
-## Tooling — build in this order
-1. **Schema validator (build first).** A small script (JSON Schema / Zod /
-   Python) that checks every `data/drugs/*.json` conforms. High leverage:
-   catches schema drift the moment drug #2 or #3 doesn't fit the
-   endpoint-agnostic / event-based model. Cheap to build.
-2. **CT.gov API pre-fill helper (defer).** Do NOT build now. Rationale: the
-   registry supplies only the *skeleton* (trial IDs, phases, dates, sponsor,
-   enrollment) — NOT the judgment-heavy efficacy layer (met?, endpoint role,
-   accelerated-approval ordering), which comes from press releases and
-   journals. Automating the skeleton doesn't remove the real bottleneck, and
-   the schema is still moving. Build only when: (a) schema is frozen after
-   ~5–10 hand-built drugs, and (b) drug count is scaling past ~20. Even then,
-   scope it to skeleton-only pre-fill; efficacy stays hand-curated on top.
+## Tooling
+- `scripts/validate.mjs` (`npm run validate`) — structure checks; provenance
+  report is the next addition.
+- `scripts/ctgov-prefill.mjs` (`npm run prefill <NCT…>`) — registry skeleton
+  pre-fill.
+- Next: derive per-record **confidence tiers** from `source_type`; then CT.gov
+  trial *discovery* by intervention name (find a drug's NCTs, not just fetch
+  known ones).
 
 ## Status
-- Schema proven on 1 drug (sotorasib). Not yet frozen.
-- No tooling built yet. Manual curation is faster than automation at this N.
+- 4 drugs; schema stable (additive-only changes across all four).
+- Trust model shifting from human-verify-per-drug → provenance + automated
+  confidence.

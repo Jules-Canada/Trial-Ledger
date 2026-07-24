@@ -61,10 +61,18 @@ from CLAUDE.md for that reason.
       Story: Phase 1b positive → Phase 2 EMPOWER-1/-2 failed to replicate (2024).
       Exercises array-sponsor (Cerevel → AbbVie acquisition) + a failed-but-not-
       formally-discontinued state. Status: draft-unverified.
-- [ ] Human spot-check rociletinib + brepocitinib + emraclidine (dates, NCTs, values)
-- [ ] Create a blank record template + curation checklist (make drug #4-5 fast)
-- [ ] Add drugs #4-5 by hand, then reassess whether schema can freeze
-- [ ] Only after ~5 drugs + frozen schema: consider CT.gov skeleton pre-fill
+- [x] Built CT.gov skeleton pre-fill: scripts/ctgov-prefill.mjs (npm run prefill).
+      Pulls authoritative phases/dates/sponsor/status/conditions for an NCT —
+      erases the "date/NCT to confirm" error class from hand-built drafts.
+- [ ] SHIFT (decided): move trust from human-verify-per-drug (can't scale to
+      every drug in development) to provenance + automated confidence. Human
+      review = optional spot-audit, not a gate. See docs/data-pipeline.md.
+- [ ] Add per-record confidence tiers to the validator (source_type -> tier;
+      provenance report: primary-evidence vs topline coverage per record).
+- [ ] Backfill exact skeleton fields into the 4 drafts via prefill (optional).
+- [ ] Create a blank record template + curation checklist.
+- [ ] CT.gov trial DISCOVERY by intervention name (find a drug's NCTs, not just
+      fetch known ones) — the next automation after confidence tiers.
 
 ## Schema findings from brepocitinib (need a decision before freezing)
 1. **Indication must be first-class.** A multi-indication drug's trials and
