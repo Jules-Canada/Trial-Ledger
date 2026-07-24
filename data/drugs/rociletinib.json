@@ -1,0 +1,135 @@
+{
+  "id": "rociletinib",
+  "_verification": {
+    "status": "draft-unverified",
+    "note": "Drug #2, added to stress-test the schema (discontinuation branch + a metric whose value collapsed on confirmation). Claude-drafted from web sources. Human spot-check pending. Approximate dates (IND Q1 2012, NDA mid-2015) and trial NCT numbers (esp. TIGER-3) still to confirm."
+  },
+  "identity": {
+    "name": "Rociletinib",
+    "codes": ["CO-1686"],
+    "brand_name": "",
+    "sponsors": ["Clovis Oncology"],
+    "modality": "small molecule",
+    "target": "EGFR (T790M)",
+    "indications": ["EGFR T790M-mutated advanced/metastatic NSCLC, after prior EGFR TKI"]
+  },
+  "trials": [
+    {
+      "id": "tiger-x",
+      "name": "TIGER-X (CO-1686-008)",
+      "registry_id": "NCT01526928",
+      "phases": ["1", "2"],
+      "start_date": "2012-01",
+      "status": "terminated",
+      "note": "Pivotal single-arm Phase 1/2. The trial whose ORR fell from ~60% (unconfirmed) to 28% (confirmed) on FDA-requested review.",
+      "sources": [
+        { "url": "https://ascopubs.org/doi/10.1200/JCO.2016.34.15_suppl.9045", "source_type": "journal" }
+      ]
+    },
+    {
+      "id": "tiger-3",
+      "name": "TIGER-3 (CO-1686-020)",
+      "registry_id": "NCT02322281",
+      "phases": ["3"],
+      "start_date": "2014-06",
+      "status": "terminated",
+      "note": "Confirmatory randomized Phase 3 vs chemotherapy. Enrollment terminated May 2016 before any efficacy readout — the trial ODAC wanted to see before deciding. NCT to confirm.",
+      "sources": []
+    }
+  ],
+  "timeline": [
+    {
+      "date": "2012-01",
+      "type": "first_in_human",
+      "trial": "tiger-x",
+      "confirmed": false,
+      "note": "IND accepted Q1 2012; Phase 1/2 TIGER-X initiated (approximate).",
+      "sources": [
+        { "url": "https://drugs.ncats.io/substance/72AH61702G", "source_type": "other" }
+      ]
+    },
+    {
+      "date": "2014-05",
+      "type": "regulatory_event",
+      "note": "FDA Breakthrough Therapy Designation for T790M NSCLC after progression on prior EGFR TKI.",
+      "sources": [
+        { "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5063481/", "source_type": "journal" }
+      ]
+    },
+    {
+      "date": "2015-07",
+      "type": "filing",
+      "note": "Rolling NDA for accelerated approval submitted mid-2015 (completed ~Nov 2015), on pooled single-arm TIGER-X + TIGER-2 data.",
+      "sources": [
+        { "url": "https://www.targetedonc.com/view/rociletinib-nda-completed-by-clovis-oncology-for-egfr-t790m-positive-nsclc", "source_type": "press_release" }
+      ]
+    },
+    {
+      "date": "2016-04-12",
+      "type": "regulatory_event",
+      "note": "ODAC voted 12-1 against accelerated approval after updated data showed markedly lower confirmed response rates; panel wanted Phase 3 TIGER-3 results first.",
+      "sources": [
+        { "url": "https://www.onclive.com/view/odac-rejects-rociletinib-in-lung-cancer", "source_type": "other" }
+      ]
+    },
+    {
+      "date": "2016-05",
+      "type": "discontinuation",
+      "note": "Clovis terminated enrollment in all rociletinib trials (incl. Phase 3 TIGER-3) after FDA signaled a Complete Response Letter; competitor osimertinib had been approved in the same setting.",
+      "sources": [
+        { "url": "https://www.onclive.com/view/clovis-ends-development-of-rociletinib-in-lung-cancer", "source_type": "other" }
+      ]
+    }
+  ],
+  "efficacy": [
+    {
+      "trial": "tiger-x",
+      "phase": "1/2",
+      "endpoint": "ORR (unconfirmed)",
+      "value": 60,
+      "unit": "%",
+      "role": "primary",
+      "met": null,
+      "comparable": false,
+      "definition": "Response rate including unconfirmed responses, 500 mg dose, n=48 (ASCO 2015).",
+      "note": "Initially reported figure that generated the excitement — later revised sharply downward.",
+      "sources": [
+        { "url": "https://www.businesswire.com/news/home/20150531005040/en/Clovis-Oncology%E2%80%99s-Rociletinib-CO-1686-Phase-2-Study", "source_type": "press_release" }
+      ]
+    },
+    {
+      "trial": "tiger-x",
+      "phase": "1/2",
+      "endpoint": "ORR (confirmed)",
+      "value": 28,
+      "unit": "%",
+      "role": "primary",
+      "met": false,
+      "comparable": false,
+      "definition": "Confirmed responses only, 500 mg dose, after FDA-requested review (625 mg arm: 34%).",
+      "note": "The collapse: ~60% → 28% on confirmation. This revision drove the ODAC 12-1 rejection and the program's end. Same endpoint name as the row above, DIFFERENT definition — hence comparable:false.",
+      "sources": [
+        { "url": "https://www.onclive.com/view/odac-rejects-rociletinib-in-lung-cancer", "source_type": "other" },
+        { "url": "https://ascopubs.org/doi/10.1200/JCO.2016.34.15_suppl.9045", "source_type": "journal" }
+      ]
+    },
+    {
+      "trial": "tiger-x",
+      "phase": "1/2",
+      "endpoint": "Disease control rate",
+      "value": 90,
+      "unit": "%",
+      "role": "secondary",
+      "met": null,
+      "definition": "Initial 500 mg report (unconfirmed).",
+      "sources": [
+        { "url": "https://www.businesswire.com/news/home/20150531005040/en/Clovis-Oncology%E2%80%99s-Rociletinib-CO-1686-Phase-2-Study", "source_type": "press_release" }
+      ]
+    }
+  ],
+  "discontinuation": {
+    "date": "2016-05",
+    "phase": "Phase 3 ongoing / NDA under review",
+    "reason": "Confirmed ORR fell far below initially reported figures; ODAC voted 12-1 against accelerated approval; FDA signaled a Complete Response Letter; competitor osimertinib approved in the same setting."
+  }
+}

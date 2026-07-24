@@ -1,0 +1,28 @@
+{
+  "name": "ct-visualizer",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Clinical Development Visualizer — the single-drug 'Signal Ledger' view",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "validate": "node scripts/validate.mjs"
+  },
+  "dependencies": {
+    "d3-scale": "^4.0.2",
+    "d3-time-format": "^4.1.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/d3-scale": "^4.0.8",
+    "@types/d3-time-format": "^4.0.3",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "^5.6.3",
+    "vite": "^6.0.3"
+  }
+}

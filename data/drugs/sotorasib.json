@@ -1,0 +1,184 @@
+{
+  "id": "sotorasib",
+  "_verification": {
+    "status": "verified",
+    "verified_on": "2026-07-23",
+    "note": "Claude-drafted from web sources; efficacy figures and key dates human spot-checked against cited sources. Cleared for publishing."
+  },
+  "identity": {
+    "name": "Sotorasib",
+    "codes": ["AMG 510"],
+    "brand_name": "Lumakras",
+    "sponsors": ["Amgen"],
+    "modality": "small molecule",
+    "target": "KRAS G12C",
+    "indications": ["KRAS G12C-mutated locally advanced or metastatic NSCLC, 2L+"]
+  },
+  "trials": [
+    {
+      "id": "codebreak-100",
+      "name": "CodeBreaK 100",
+      "registry_id": "NCT03600883",
+      "phases": ["1", "2"],
+      "start_date": "2018-08",
+      "status": "completed",
+      "note": "Single Phase 1/2 first-in-human trial — phases are not discrete here.",
+      "sources": [
+        { "url": "https://clinicaltrials.gov/study/NCT03600883", "source_type": "registry" }
+      ]
+    },
+    {
+      "id": "codebreak-200",
+      "name": "CodeBreaK 200",
+      "registry_id": "NCT04303780",
+      "phases": ["3"],
+      "start_date": "2020-06",
+      "status": "completed",
+      "note": "Confirmatory Phase 3 vs docetaxel; read out AFTER accelerated approval.",
+      "sources": [
+        { "url": "https://clinicaltrials.gov/study/NCT04303780", "source_type": "registry" }
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "date": "2018-08",
+      "type": "first_in_human",
+      "trial": "codebreak-100",
+      "confirmed": true,
+      "note": "First-in-human study 20170543 initiated August 2018.",
+      "sources": [
+        { "url": "https://clinicaltrials.gov/study/NCT03600883", "source_type": "registry" }
+      ]
+    },
+    {
+      "date": "2020-12-16",
+      "type": "filing",
+      "note": "NDA submitted to FDA under Real-Time Oncology Review; Breakthrough Therapy Designation (2020-12-07); later Priority Review, PDUFA 2021-08-16.",
+      "sources": [
+        { "url": "https://www.amgen.com/newsroom/press-releases/2020/12/amgen-submits-sotorasib-new-drug-application-to-u-s--fda-for-advanced-or-metastatic-non-small-cell-lung-cancer", "source_type": "press_release" }
+      ]
+    },
+    {
+      "date": "2021-05-28",
+      "type": "accelerated_approval",
+      "note": "FDA accelerated approval, 2L+ KRAS G12C NSCLC, off Phase 2 data. Non-linear: precedes the Phase 3 readout.",
+      "sources": [
+        { "url": "https://www.drugs.com/history/lumakras.html", "source_type": "drugs_at_fda" }
+      ]
+    },
+    {
+      "date": "2022-08",
+      "type": "data_readout",
+      "trial": "codebreak-200",
+      "note": "Phase 3 topline: met primary PFS, no OS benefit.",
+      "sources": [
+        { "url": "https://www.amgen.com/newsroom/press-releases/2022/08/amgen-announces-topline-data-from-lumakras-sotorasib-phase-3-trial-in-nonsmall-cell-lung-cancer", "source_type": "press_release" }
+      ]
+    },
+    {
+      "date": "2023-12",
+      "type": "regulatory_event",
+      "note": "Post-approval regulatory scrutiny. Out of scope for v1 schema; recorded for context.",
+      "sources": [
+        { "url": "https://www.amgen.com/newsroom/press-releases/2023/12/amgen-provides-regulatory-update-on-status-of-lumakras-sotorasib", "source_type": "press_release" }
+      ]
+    }
+  ],
+  "efficacy": [
+    {
+      "trial": "codebreak-100",
+      "phase": "1/2",
+      "endpoint": "ORR",
+      "value": 41,
+      "unit": "%",
+      "role": "primary",
+      "met": true,
+      "note": "Earlier Phase 2 readout reported 37.1% — superseded; verify which figure to use.",
+      "sources": [
+        { "url": "https://ascopubs.org/doi/10.1200/JCO.22.02524", "source_type": "journal" },
+        { "url": "https://www.prnewswire.com/news-releases/results-from-phase-2-codebreak-100-show-lumakras-sotorasib-is-the-first-and-only-kras-g12c-inhibitor-with-overall-survival-data-301306186.html", "source_type": "press_release" }
+      ]
+    },
+    {
+      "trial": "codebreak-100",
+      "phase": "1/2",
+      "endpoint": "Median duration of response",
+      "value": 12.3,
+      "unit": "months",
+      "role": "secondary",
+      "met": null,
+      "sources": [
+        { "url": "https://ascopubs.org/doi/10.1200/JCO.22.02524", "source_type": "journal" }
+      ]
+    },
+    {
+      "trial": "codebreak-100",
+      "phase": "1/2",
+      "endpoint": "Median PFS",
+      "value": 6.3,
+      "unit": "months",
+      "role": "secondary",
+      "met": null,
+      "sources": [
+        { "url": "https://ascopubs.org/doi/10.1200/JCO.22.02524", "source_type": "journal" }
+      ]
+    },
+    {
+      "trial": "codebreak-100",
+      "phase": "1/2",
+      "endpoint": "Median OS",
+      "value": 12.5,
+      "unit": "months",
+      "role": "exploratory",
+      "met": null,
+      "note": "2-year OS ~32.5%; OS was exploratory here, becomes a formal secondary in Phase 3.",
+      "sources": [
+        { "url": "https://ascopubs.org/doi/10.1200/JCO.22.02524", "source_type": "journal" }
+      ]
+    },
+    {
+      "trial": "codebreak-200",
+      "phase": "3",
+      "endpoint": "PFS",
+      "value": 5.6,
+      "unit": "months",
+      "role": "primary",
+      "met": true,
+      "comparator": "docetaxel 4.5 months (HR 0.66, 95% CI 0.51-0.86, P=0.0017)",
+      "note": "Primary endpoint MET; superior to docetaxel. 12-month PFS 24.8% vs 10.1%.",
+      "sources": [
+        { "url": "https://www.sciencedirect.com/science/article/abs/pii/S0140673623002210", "source_type": "journal" },
+        { "url": "https://www.amgen.com/newsroom/press-releases/2022/08/amgen-announces-topline-data-from-lumakras-sotorasib-phase-3-trial-in-nonsmall-cell-lung-cancer", "source_type": "press_release" }
+      ]
+    },
+    {
+      "trial": "codebreak-200",
+      "phase": "3",
+      "endpoint": "OS",
+      "value": null,
+      "unit": "months",
+      "role": "secondary",
+      "met": false,
+      "note": "Secondary endpoint NOT met — no significant OS benefit vs docetaxel. Same phase as the met PFS above: proves met? is per-endpoint, not per-phase.",
+      "sources": [
+        { "url": "https://www.oncnursingnews.com/view/phase-3-findings-showcase-pfs-benefit-with-sotorasib-for-patients-with-kras-g12c-nsclc", "source_type": "other" }
+      ]
+    },
+    {
+      "trial": "codebreak-200",
+      "phase": "3",
+      "endpoint": "ORR",
+      "value": 28.1,
+      "unit": "%",
+      "role": "secondary",
+      "met": true,
+      "comparator": "docetaxel 13.2% (P<0.001)",
+      "note": "Superior ORR vs docetaxel.",
+      "sources": [
+        { "url": "https://ascopost.com/news/february-2023/codebreak-200-trial-sotorasib-vs-docetaxel-in-previously-treated-patients-with-advanced-kras-g12c-mutated-nsclc/", "source_type": "other" }
+      ]
+    }
+  ],
+  "discontinuation": null
+}
