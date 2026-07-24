@@ -11,27 +11,44 @@ signal holds up as the evidence gets more rigorous (single-arm → randomized).
 > Status: early work in progress. 4 drugs, 3 therapeutic areas, 3 lifecycle
 > states (approved / discontinued / under-review).
 
-## Quick start (no API key needed)
+## Two toolchains
 
-Most work — the frontend and the curated drug records — needs **no API key**.
-The drug data is committed JSON and the site is static.
+Trial-Ledger is a **Python data pipeline + TypeScript frontend** — the common
+"Python for data, TS for the web app" split.
+
+- **Frontend** (`src/`) — React + D3, Node 20+ (developed on Node 26).
+- **Pipeline** (`pipeline/`) — Python 3.11+. Authors and validates the drug
+  records, and generates the frontend's TypeScript types from the canonical
+  schema. Python owns the schema; the TS follows.
+
+## Quick start
+
+**Frontend (no API key needed):** the drug data is committed JSON, the site is static.
 
 ```sh
 npm install
 npm run dev        # open the Signal Ledger locally
-npm run validate   # check every data/drugs/*.json against the schema
+npm run build      # type-check + static build
 ```
 
-Requires Node 20+ (developed on Node 26).
+**Pipeline (Python):**
+
+```sh
+python3.11 -m venv .venv && source .venv/bin/activate
+pip install -e .          # installs the tl-* commands
+tl-validate              # check every data/drugs/*.json against the schema
+```
 
 ## What's where
 
 | Path | What |
 |---|---|
 | `src/` | React + D3 frontend (the Signal Ledger view) |
+| `src/types.generated.ts` | TS types generated from the schema — do not edit |
 | `data/drugs/*.json` | One curated record per drug (the source of truth) |
-| `scripts/validate.mjs` | Dependency-free schema validator |
-| `pipeline/` | Offline data pipeline (CT.gov prefill + LLM authoring) |
+| `data/drug-record.schema.json` | JSON Schema, emitted from `pipeline/schema.py` |
+| `pipeline/` | Offline Python pipeline (schema, validate, CT.gov prefill, LLM authoring) |
+| `pipeline/schema.py` | **Canonical drug-record schema** (Pydantic) — single source of truth |
 | `docs/` | Schema, data pipeline, and design specs |
 
 Start with `docs/drug-schema.md` (the data model) and
@@ -42,17 +59,20 @@ Start with `docs/drug-schema.md` (the data model) and
 | Command | Needs key? | Does |
 |---|---|---|
 | `npm run dev` / `build` | no | run / build the frontend |
-| `npm run validate` | no | validate all drug records |
-| `npm run prefill NCT…` | no | fetch authoritative trial skeleton from ClinicalTrials.gov |
-| `npm run author "<drug>"` | **yes** | auto-draft a drug record via an LLM |
+| `tl-validate` | no | validate all drug records against the schema |
+| `tl-prefill NCT…` | no | fetch authoritative trial skeleton from ClinicalTrials.gov |
+| `tl-gen-types` | no | regenerate `src/types.generated.ts` + the JSON Schema |
+| `tl-author "<drug>"` | **yes** | auto-draft a drug record via an LLM |
+
+(Each `tl-*` command is also runnable as `python -m pipeline.<module>`.)
 
 ## The authoring pipeline (needs your own key)
 
-`npm run author "<drug>"` drafts a record: an LLM researches + extracts the
-judgment layer (efficacy, timeline), and trial skeleton fields (phases, dates,
-sponsor, status) are merged authoritatively from ClinicalTrials.gov. It's
-**agent-agnostic** — Claude is the first provider behind an `LlmProvider`
-interface (`LLM_PROVIDER` selects). See `docs/design/authoring-pipeline.md`.
+`tl-author "<drug>"` drafts a record: an LLM researches + extracts the judgment
+layer (efficacy, timeline), and trial skeleton fields (phases, dates, sponsor,
+status) are merged authoritatively from ClinicalTrials.gov. It's
+**agent-agnostic** — Claude is the first provider behind an `LlmProvider` base
+class (`LLM_PROVIDER` selects). See `docs/design/authoring-pipeline.md`.
 
 Provide `ANTHROPIC_API_KEY` via `.env.local` (copy `.env.example`) — it's
 gitignored and loaded automatically. The key is used **only** by this offline

@@ -1,0 +1,25 @@
+[project]
+name = "trial-ledger-pipeline"
+version = "0.1.0"
+description = "Offline data pipeline for Trial-Ledger — authors and validates single-drug clinical-development records."
+requires-python = ">=3.11"
+dependencies = [
+    "anthropic>=0.114.0",
+    "pydantic>=2.6",
+    "python-dotenv>=1.0",
+]
+
+# Console entry points. After `pip install -e .` these are on PATH; you can also
+# run any of them as `python -m pipeline.<module>`.
+[project.scripts]
+tl-validate = "pipeline.validate:main"
+tl-prefill = "pipeline.prefill:main"
+tl-author = "pipeline.author:main"
+tl-gen-types = "pipeline.gen_types:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["pipeline", "pipeline.llm"]

@@ -17,5 +17,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "data", "pipeline", "vite.config.ts"]
+  "//": "Offline pipeline is Python (pipeline/*.py); src/types.generated.ts is emitted from it via tl-gen-types.",
+  "include": ["src", "data", "vite.config.ts"]
 }

@@ -23,7 +23,7 @@ gate. Confidence is *expressed and traceable*, not *asserted by a human stamp*.
 
 ## Stages: gather → author → publish
 1. **Gather (increasingly automated)**
-   - Skeleton: `npm run prefill NCT03600883 …` (scripts/ctgov-prefill.mjs) pulls
+   - Skeleton: `tl-prefill NCT03600883 …` (pipeline/prefill.py) pulls
      authoritative registry fields — phases, dates, sponsor, status, conditions,
      enrollment. This replaces hand-entering *and* hand-verifying the skeleton
      (the exact fields that were "to confirm" in our first drafts).
@@ -33,7 +33,7 @@ gate. Confidence is *expressed and traceable*, not *asserted by a human stamp*.
    - Fill the record from prefill stubs + curated efficacy. Set confidence via
      `source_type`, not a human stamp.
 3. **Publish**
-   - `npm run validate` must pass (structure + provenance). Commit. No human
+   - `tl-validate` must pass (structure + provenance). Commit. No human
      sign-off required; provenance travels with the data.
 
 ## What automation is authoritative for — and what it isn't
@@ -42,12 +42,18 @@ gate. Confidence is *expressed and traceable*, not *asserted by a human stamp*.
 - Efficacy stays the judgment layer — **sourced and tiered, not human-verified
   per figure**. When sources disagree, keep both and note it.
 
-## Tooling
-- `scripts/validate.mjs` (`npm run validate`) — structure checks; provenance
-  report is the next addition.
-- `pipeline/ctgov-prefill.ts` (`npm run prefill <NCT…>`) — registry skeleton
-  pre-fill CLI; shares `pipeline/ctgov.ts` with the authoring orchestrator, which
-  merges the registry skeleton over the LLM's trial guesses automatically.
+## Tooling (Python — see pyproject.toml)
+- `pipeline/schema.py` — the **canonical Pydantic schema**: single source of
+  truth for validation, the authoring output contract, and the generated
+  frontend types.
+- `pipeline/validate.py` (`tl-validate`) — validates every record against the
+  schema (structure, enums, trial cross-references); provenance report is the
+  next addition.
+- `pipeline/prefill.py` (`tl-prefill <NCT…>`) — registry skeleton pre-fill CLI;
+  shares `pipeline/ctgov.py` with the authoring orchestrator, which merges the
+  registry skeleton over the LLM's trial guesses automatically.
+- `pipeline/gen_types.py` (`tl-gen-types`) — regenerates `src/types.generated.ts`
+  and `data/drug-record.schema.json` from the schema.
 - Next: derive per-record **confidence tiers** from `source_type`; then CT.gov
   trial *discovery* by intervention name (find a drug's NCTs, not just fetch
   known ones).
@@ -60,8 +66,8 @@ gate. Confidence is *expressed and traceable*, not *asserted by a human stamp*.
 - Provide it at runtime, never in git (`.env*` is gitignored; `.env.example` is
   the tracked template). Options, most to least secure:
   - macOS Keychain: `security add-generic-password -a "$USER" -s ANTHROPIC_API_KEY -w`
-    once, then `ANTHROPIC_API_KEY=$(security find-generic-password -s ANTHROPIC_API_KEY -w) npm run author "<drug>"`.
-  - `.env.local` (gitignored): copy from `.env.example`; `npm run author` auto-loads it.
+    once, then `ANTHROPIC_API_KEY=$(security find-generic-password -s ANTHROPIC_API_KEY -w) tl-author "<drug>"`.
+  - `.env.local` (gitignored): copy from `.env.example`; `tl-author` auto-loads it (python-dotenv).
   - Ephemeral shell export for the session.
 
 ## Status

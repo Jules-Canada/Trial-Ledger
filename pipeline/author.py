@@ -1,0 +1,183 @@
+"""Automated authoring orchestrator.
+
+Agent-agnostic: depends only on the LlmProvider base class. Select the provider
+via LLM_PROVIDER (default "claude"). See docs/design/authoring-pipeline.md.
+
+Usage: `tl-author "sotorasib"` (or `python -m pipeline.author "sotorasib"`).
+Reads ANTHROPIC_API_KEY from the environment or .env.local (gitignored).
+"""
+
+from __future__ import annotations
+
+import os
+import re
+import sys
+from pathlib import Path
+from typing import Any
+
+from dotenv import load_dotenv
+
+from pipeline.ctgov import fetch_trial_skeleton, is_nct
+from pipeline.llm.provider import LlmProvider
+from pipeline.schema import DrugRecord, Source, Trial
+
+# Load .env.local (gitignored) if present — same contract as the old node
+# --env-file-if-exists=.env.local. Never commit a key. Real env vars win.
+load_dotenv(Path(__file__).resolve().parent.parent / ".env.local", override=False)
+
+ROOT = Path(__file__).resolve().parent.parent
+OUT_DIR = ROOT / "data" / "drugs"
+
+# Optional convenience fields that hand-curated records may carry but the
+# authoring contract doesn't require. Strip them from authored output when unset,
+# so "absence is meaningful" nulls (value, met, start_date, trial, ...) stay
+# distinct from fields the author simply didn't populate.
+_STRIP_WHEN_NULL = {"confirmed", "comparable", "definition", "verified_on", "registry_id"}
+
+
+def authoring_prompt(drug: str) -> str:
+    return "\n".join(
+        [
+            f"Build a single-drug clinical-development record for: {drug}.",
+            "",
+            "Rules:",
+            "- Public sources only. Attach a source (url + source_type) to every data point.",
+            "- Efficacy is endpoint-agnostic: capture whatever endpoint each trial reported",
+            "  (ORR, PFS, OS, ACR20, PASI, PANSS, TIS, etc.) with its value, unit, role,",
+            "  and met? (true/false/null). met? is PER-ENDPOINT, not per-phase.",
+            "- A trial can span phases (e.g. Phase 1/2) and belongs to one indication and",
+            "  one sponsor. Sponsorship can differ across trials (transfers over time).",
+            "- Give each trial its ClinicalTrials.gov NCT id in registry_id when one exists;",
+            "  authoritative skeleton fields are merged from the registry afterward.",
+            "- Timeline is a set of dated events (non-linear: accelerated approval can",
+            "  precede the confirmatory Phase 3 readout).",
+            "- If a value is not disclosed, use null rather than inventing a number.",
+            "- Set discontinuation only if the drug's development was halted.",
+        ]
+    )
+
+
+def get_provider() -> LlmProvider:
+    name = os.environ.get("LLM_PROVIDER", "claude")
+    if name == "claude":
+        from pipeline.llm.claude import ClaudeProvider
+
+        return ClaudeProvider()
+    raise ValueError(
+        f'Unknown LLM_PROVIDER "{name}". Only "claude" is implemented so far.'
+    )
+
+
+def merge_prefill(trials: list[Trial]) -> int:
+    """The LLM's trial skeleton (phases, dates, sponsor, status) is a guess; the
+    registry is authoritative. For every trial with a real NCT, overwrite those
+    fields from ClinicalTrials.gov and keep the LLM's id/indication/note/name."""
+    filled = 0
+    for t in trials:
+        if not is_nct(t.registry_id):
+            continue
+        sk = fetch_trial_skeleton(t.registry_id.strip())
+        if sk is None:
+            print(
+                f"[author] prefill: {t.registry_id} fetch failed, keeping LLM values",
+                file=sys.stderr,
+            )
+            continue
+        t.phases = sk.phases
+        t.start_date = sk.start_date
+        t.status = sk.status
+        if sk.sponsor:
+            t.sponsor = sk.sponsor
+        if not any(s.source_type == "registry" for s in t.sources):
+            t.sources.insert(
+                0,
+                Source(
+                    url=f"https://clinicaltrials.gov/study/{sk.registry_id}",
+                    source_type="registry",
+                ),
+            )
+        t.note = f"{t.note + ' ' if t.note else ''}[skeleton fields from ClinicalTrials.gov]"
+        filled += 1
+    return filled
+
+
+def _slug(s: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "-", s.lower()).strip("-")
+
+
+def _serialize(record: DrugRecord) -> dict[str, Any]:
+    """Dump to JSON-ready dict, keeping meaningful nulls but dropping unset
+    optional-convenience fields (see _STRIP_WHEN_NULL)."""
+    data = record.model_dump(mode="json", by_alias=True)
+
+    def clean(obj: Any) -> Any:
+        if isinstance(obj, dict):
+            return {
+                k: clean(v)
+                for k, v in obj.items()
+                if not (k in _STRIP_WHEN_NULL and v is None)
+            }
+        if isinstance(obj, list):
+            return [clean(v) for v in obj]
+        return obj
+
+    return clean(data)
+
+
+def main() -> None:
+    import json
+
+    drug = " ".join(sys.argv[1:]).strip()
+    if not drug:
+        print('Usage: tl-author "<drug name>"', file=sys.stderr)
+        sys.exit(1)
+
+    provider = get_provider()
+    if provider.name == "claude" and not os.environ.get("ANTHROPIC_API_KEY"):
+        print(
+            "Missing ANTHROPIC_API_KEY. Provide it one of these ways (never commit it):\n"
+            "  • Keychain (most secure): "
+            'ANTHROPIC_API_KEY=$(security find-generic-password -s ANTHROPIC_API_KEY -w) '
+            'tl-author "<drug>"\n'
+            "  • .env.local (gitignored): copy .env.example to .env.local, fill it in, "
+            'then tl-author "<drug>"\n'
+            "  • This session: type  ! export ANTHROPIC_API_KEY=sk-ant-...  then run.",
+            file=sys.stderr,
+        )
+        sys.exit(1)
+
+    brief = authoring_prompt(drug)
+    print(
+        f'[author] provider={provider.name} model={provider.model} drug="{drug}"',
+        file=sys.stderr,
+    )
+
+    result = provider.research(brief=brief, output_model=DrugRecord)
+    record = result.data
+
+    # Registry override: skeleton fields come from CT.gov, not the LLM.
+    n = merge_prefill(record.trials)
+    print(f"[author] prefill: registry skeleton merged for {n} trial(s)", file=sys.stderr)
+
+    record.id = record.id or _slug(drug)
+    # Trust is provenance-based: stamp which model authored this, not a human sign-off.
+    from pipeline.schema import Verification
+
+    record.verification = Verification(
+        status="draft-unverified",
+        note=(
+            f"Auto-authored by {result.provider}/{result.model}; trial skeleton fields "
+            "(phases, dates, sponsor, status) merged from ClinicalTrials.gov. "
+            "Provenance-based trust: source_type per data point signals confidence. "
+            "Run tl-validate."
+        ),
+    )
+
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
+    out = OUT_DIR / f"{record.id}.json"
+    out.write_text(json.dumps(_serialize(record), indent=2) + "\n")
+    print(f"[author] wrote {out}\n[author] next: tl-validate", file=sys.stderr)
+
+
+if __name__ == "__main__":
+    main()

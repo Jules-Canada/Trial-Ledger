@@ -42,8 +42,9 @@ from CLAUDE.md for that reason.
 - Endpoint roles shift by phase (OS exploratory in P1/2, secondary in P3).
 
 ## Data creation pipeline (rebalanced focus — data was lagging the frontend)
-- [x] Build the schema validator: scripts/validate.mjs, `npm run validate`
-      (dependency-free; checks structure, enums, trial cross-references)
+- [x] Build the schema validator (checks structure, enums, trial
+      cross-references). Now `pipeline/validate.py` / `tl-validate` — see the
+      Python-migration entry below (originally scripts/validate.mjs).
 - [x] Drug #2 added: rociletinib (Clovis) — high-profile EGFR NSCLC failure.
       Exercises the discontinuation branch + a metric that collapsed on
       confirmation (ORR 60% unconfirmed → 28% confirmed). Schema held with NO
@@ -61,9 +62,19 @@ from CLAUDE.md for that reason.
       Story: Phase 1b positive → Phase 2 EMPOWER-1/-2 failed to replicate (2024).
       Exercises array-sponsor (Cerevel → AbbVie acquisition) + a failed-but-not-
       formally-discontinued state. Status: draft-unverified.
-- [x] Built CT.gov skeleton pre-fill: scripts/ctgov-prefill.mjs (npm run prefill).
+- [x] Built CT.gov skeleton pre-fill (now `pipeline/prefill.py` / `tl-prefill`).
       Pulls authoritative phases/dates/sponsor/status/conditions for an NCT —
       erases the "date/NCT to confirm" error class from hand-built drafts.
+- [x] Built agent-agnostic automated authoring (`tl-author "<drug>"`): LLM
+      research+extract behind an `LlmProvider` base class, Claude adapter first,
+      CT.gov skeleton merged over the LLM's guesses. Proven end-to-end.
+- [x] **Migrated the whole pipeline TypeScript → Python** (maintainer is
+      Python-native; the data/life-sci contributor pool skews Python). Frontend
+      stays React+D3/TS. Now: `pipeline/*.py`, Pydantic schema in
+      `pipeline/schema.py` as the single source of truth (validation + authoring
+      contract + generated frontend types via `tl-gen-types`). Commands are the
+      `tl-*` console scripts (pyproject.toml); npm covers only the frontend.
+      Data records (`data/drugs/*.json`) unchanged; all 5 still validate.
 - [ ] SHIFT (decided): move trust from human-verify-per-drug (can't scale to
       every drug in development) to provenance + automated confidence. Human
       review = optional spot-audit, not a gate. See docs/data-pipeline.md.

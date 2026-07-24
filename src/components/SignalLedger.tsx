@@ -70,7 +70,7 @@ function formatValue(e: EfficacyRecord): string {
   return `${e.value} ${e.unit}`;
 }
 
-function shortComparator(c?: string): string | null {
+function shortComparator(c?: string | null): string | null {
   if (!c) return null;
   const head = c.split("(")[0].trim().replace(/,+$/, "");
   return `vs ${head}`;
