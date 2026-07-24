@@ -1,0 +1,16 @@
+# Scan staged changes for secrets before every commit.
+# See CONTRIBUTING.md. GitHub push protection is the server-side backstop.
+if command -v gitleaks >/dev/null 2>&1; then
+  gitleaks git --staged --redact --no-banner || {
+    echo ""
+    echo "✗ gitleaks found a potential secret in your staged changes — commit blocked."
+    echo "  Remove it (never commit API keys; use .env.local). If it's a false positive,"
+    echo "  see https://github.com/gitleaks/gitleaks#configuration to allowlist it."
+    exit 1
+  }
+else
+  echo "⚠  gitleaks not installed — skipping local secret scan."
+  echo "   Install it so your commits are scanned:"
+  echo "     macOS:  brew install gitleaks"
+  echo "     other:  https://github.com/gitleaks/gitleaks#installing"
+fi

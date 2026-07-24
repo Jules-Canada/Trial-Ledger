@@ -55,8 +55,10 @@ data point keeps its `source_type` confidence signal.
 - The LLM's job is the judgment layer: efficacy, timeline narrative, endpoints.
 
 ## Status / next
-- Scaffolded: provider interface, Claude adapter, orchestrator CLI (`npm run
-  author "<drug>"`). Needs `ANTHROPIC_API_KEY` to run live.
-- TODO: merge CT.gov prefill into the orchestrator (currently extract-only);
-  batch mode (many drugs); per-record confidence tiers in the validator;
+- Built: provider interface, Claude adapter, orchestrator CLI (`npm run author
+  "<drug>"`). Needs `ANTHROPIC_API_KEY` to run live.
+- Built: CT.gov prefill merged into the orchestrator (pipeline/ctgov.ts) —
+  every trial with a real NCT gets phases/dates/sponsor/status overwritten from
+  the registry; the LLM keeps id/indication/note/name.
+- TODO: batch mode (many drugs); per-record confidence tiers in the validator;
   second provider adapter to exercise the abstraction.

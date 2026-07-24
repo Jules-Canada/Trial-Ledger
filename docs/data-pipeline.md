@@ -45,11 +45,24 @@ gate. Confidence is *expressed and traceable*, not *asserted by a human stamp*.
 ## Tooling
 - `scripts/validate.mjs` (`npm run validate`) — structure checks; provenance
   report is the next addition.
-- `scripts/ctgov-prefill.mjs` (`npm run prefill <NCT…>`) — registry skeleton
-  pre-fill.
+- `pipeline/ctgov-prefill.ts` (`npm run prefill <NCT…>`) — registry skeleton
+  pre-fill CLI; shares `pipeline/ctgov.ts` with the authoring orchestrator, which
+  merges the registry skeleton over the LLM's trial guesses automatically.
 - Next: derive per-record **confidence tiers** from `source_type`; then CT.gov
   trial *discovery* by intervention name (find a drug's NCTs, not just fetch
   known ones).
+
+## Secrets (ANTHROPIC_API_KEY)
+- The key is used ONLY by the offline authoring CLI (pipeline/), never by the
+  browser app (src/). The deployed static site never calls the API at runtime,
+  so the key never goes to the host or the client bundle. **Never** prefix it
+  with `VITE_` — Vite inlines those into public client JS.
+- Provide it at runtime, never in git (`.env*` is gitignored; `.env.example` is
+  the tracked template). Options, most to least secure:
+  - macOS Keychain: `security add-generic-password -a "$USER" -s ANTHROPIC_API_KEY -w`
+    once, then `ANTHROPIC_API_KEY=$(security find-generic-password -s ANTHROPIC_API_KEY -w) npm run author "<drug>"`.
+  - `.env.local` (gitignored): copy from `.env.example`; `npm run author` auto-loads it.
+  - Ephemeral shell export for the session.
 
 ## Status
 - 4 drugs; schema stable (additive-only changes across all four).
