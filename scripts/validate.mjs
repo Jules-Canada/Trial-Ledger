@@ -88,7 +88,8 @@ function validateDrug(drug, errs) {
         errs.push(`${p}.date: must be a string or null`);
       if (!EVENT_TYPES.has(e.type))
         errs.push(`${p}.type: invalid event type "${e.type}"`);
-      if (e.trial !== undefined && !trialIds.has(e.trial))
+      // trial is optional and may be null (e.g. a corporate event, no trial)
+      if (e.trial != null && !trialIds.has(e.trial))
         errs.push(`${p}.trial: "${e.trial}" does not match any trial id`);
       validateSources(e.sources, `${p}.sources`, errs);
     });

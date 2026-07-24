@@ -1,0 +1,614 @@
+{
+  "id": "adagrasib",
+  "identity": {
+    "name": "adagrasib",
+    "codes": [
+      "MRTX849"
+    ],
+    "brand_name": "Krazati",
+    "sponsors": [
+      "Mirati Therapeutics",
+      "Bristol Myers Squibb"
+    ],
+    "modality": "Small molecule (oral, covalent/irreversible inhibitor)",
+    "target": "KRAS G12C",
+    "indications": [
+      "Non-small cell lung cancer (KRAS G12C-mutated)",
+      "Colorectal cancer (KRAS G12C-mutated)"
+    ]
+  },
+  "trials": [
+    {
+      "id": "krystal-1",
+      "name": "KRYSTAL-1",
+      "registry_id": "NCT03785249",
+      "indication": "Advanced solid tumors with KRAS G12C (NSCLC, CRC, other)",
+      "sponsor": "Mirati Therapeutics Inc.",
+      "phases": [
+        "1",
+        "2"
+      ],
+      "start_date": "2019-01-15",
+      "status": "ongoing",
+      "note": "First-in-human dose-finding established RP2D of 600 mg BID; pivotal registrational cohorts for NSCLC and CRC (with cetuximab). [skeleton fields from ClinicalTrials.gov]",
+      "sources": [
+        {
+          "url": "https://clinicaltrials.gov/study/NCT03785249",
+          "source_type": "registry"
+        },
+        {
+          "url": "https://ascopubs.org/doi/10.1200/JCO.21.02752",
+          "source_type": "journal"
+        },
+        {
+          "url": "https://escholarship.org/uc/item/0fx965hf",
+          "source_type": "journal"
+        }
+      ]
+    },
+    {
+      "id": "krystal-7",
+      "name": "KRYSTAL-7",
+      "registry_id": "NCT04613596",
+      "indication": "First-line advanced/metastatic KRAS G12C NSCLC (adagrasib + pembrolizumab)",
+      "sponsor": "Mirati Therapeutics Inc.",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_date": "2020-12-02",
+      "status": "ongoing",
+      "note": "Chemo-free adagrasib 400 mg BID + pembrolizumab; not basis of any approval to date. [skeleton fields from ClinicalTrials.gov]",
+      "sources": [
+        {
+          "url": "https://clinicaltrials.gov/study/NCT04613596",
+          "source_type": "registry"
+        },
+        {
+          "url": "https://ascopubs.org/doi/10.1200/JCO.2025.43.16_suppl.8500",
+          "source_type": "journal"
+        },
+        {
+          "url": "https://www.jto.org/article/S1556-0864(25)00200-X/fulltext",
+          "source_type": "journal"
+        }
+      ]
+    },
+    {
+      "id": "krystal-12",
+      "name": "KRYSTAL-12",
+      "registry_id": "NCT04685135",
+      "indication": "Previously treated advanced/metastatic KRAS G12C NSCLC (vs docetaxel)",
+      "sponsor": "Mirati Therapeutics Inc.",
+      "phases": [
+        "3"
+      ],
+      "start_date": "2021-02-23",
+      "status": "ongoing",
+      "note": "Confirmatory trial for NSCLC accelerated approval; 453 patients; adagrasib vs docetaxel; met primary PFS endpoint (ASCO 2024). [skeleton fields from ClinicalTrials.gov]",
+      "sources": [
+        {
+          "url": "https://clinicaltrials.gov/study/NCT04685135",
+          "source_type": "registry"
+        },
+        {
+          "url": "https://ascopubs.org/doi/10.1200/JCO.2024.42.17_suppl.LBA8509",
+          "source_type": "journal"
+        },
+        {
+          "url": "https://dailynews.ascopubs.org/do/krystal-12-shows-pfs-benefit-adagrasib-over-docetaxel-previously-treated-advanced-kras",
+          "source_type": "other"
+        }
+      ]
+    },
+    {
+      "id": "krystal-10",
+      "name": "KRYSTAL-10",
+      "registry_id": "NCT04793958",
+      "indication": "Second-line KRAS G12C metastatic colorectal cancer (adagrasib + cetuximab vs chemotherapy)",
+      "sponsor": "Mirati Therapeutics Inc.",
+      "phases": [
+        "3"
+      ],
+      "start_date": "2021-06-24",
+      "status": "ongoing",
+      "note": "Confirmatory trial for CRC accelerated approval; failed dual primary endpoints (PFS and OS); presented ESMO GI 2026. [skeleton fields from ClinicalTrials.gov]",
+      "sources": [
+        {
+          "url": "https://clinicaltrials.gov/study/NCT04793958",
+          "source_type": "registry"
+        },
+        {
+          "url": "https://oncodaily.com/oncolibrary/gastrointestinal-oncology/krystal-10",
+          "source_type": "other"
+        },
+        {
+          "url": "https://www.onclive.com/view/adagrasib-plus-cetuximab-misses-os-pfs-end-points-in-pretreated-kras-g12c-mutated-crc",
+          "source_type": "other"
+        },
+        {
+          "url": "https://www.annalsofoncology.org/article/S0923-7534(21)01315-6/fulltext",
+          "source_type": "journal"
+        }
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "date": "2019",
+      "type": "first_in_human",
+      "trial": "krystal-1",
+      "note": "KRYSTAL-1 Phase 1/1b dose-finding begins in advanced KRAS G12C solid tumors.",
+      "sources": [
+        {
+          "url": "https://ascopubs.org/doi/10.1200/JCO.21.02752",
+          "source_type": "journal"
+        }
+      ]
+    },
+    {
+      "date": "2022-02-15",
+      "type": "filing",
+      "trial": "krystal-1",
+      "note": "FDA accepts Mirati NDA for adagrasib in previously treated KRAS G12C NSCLC.",
+      "sources": [
+        {
+          "url": "https://www.ajmc.com/view/in-krystal-1-adagrasib-for-nsclc-has-43-response-rate",
+          "source_type": "other"
+        }
+      ]
+    },
+    {
+      "date": "2022-12-12",
+      "type": "accelerated_approval",
+      "trial": "krystal-1",
+      "note": "FDA accelerated approval of Krazati for KRAS G12C locally advanced/metastatic NSCLC after >=1 prior systemic therapy; preceded confirmatory KRYSTAL-12 readout.",
+      "sources": [
+        {
+          "url": "https://www.ons.org/publications-research/voice/news-views/12-2022/fda-grants-accelerated-approval-adagrasib-kras-g12c",
+          "source_type": "other"
+        },
+        {
+          "url": "https://www.onclive.com/view/fda-approves-adagrasib-for-locally-advanced-or-metastatic-kras-g12-nsclc",
+          "source_type": "other"
+        }
+      ]
+    },
+    {
+      "date": "2023-10-08",
+      "type": "regulatory_event",
+      "trial": null,
+      "note": "BMS announces agreement to acquire Mirati Therapeutics.",
+      "sources": [
+        {
+          "url": "http://vitalsights.org/2024/05/28/bristol-myers-squibbs-acquisition-of-mirati-therapeutics/",
+          "source_type": "other"
+        }
+      ]
+    },
+    {
+      "date": "2023-11",
+      "type": "regulatory_event",
+      "trial": null,
+      "note": "EMA CHMP positive opinion for adagrasib in NSCLC.",
+      "sources": [
+        {
+          "url": "https://www.onclive.com/view/adagrasib-approved-in-europe-for-pretreated-kras-g12c-advanced-nsclc",
+          "source_type": "other"
+        }
+      ]
+    },
+    {
+      "date": "2024-01-10",
+      "type": "approval",
+      "trial": null,
+      "note": "European Commission grants conditional marketing authorization for adagrasib in pretreated KRAS G12C advanced NSCLC.",
+      "sources": [
+        {
+          "url": "https://www.cancernetwork.com/view/european-commission-approves-adagrasib-in-kras-g12c-mutated-nsclc",
+          "source_type": "other"
+        }
+      ]
+    },
+    {
+      "date": "2024-01-23",
+      "type": "regulatory_event",
+      "trial": null,
+      "note": "BMS completes acquisition of Mirati; adagrasib rights transfer to BMS.",
+      "sources": [
+        {
+          "url": "https://www.pharmexec.com/view/bristol-myers-squibb-completes-acquisition-of-mirati-to-bolster-oncology-pipeline",
+          "source_type": "other"
+        }
+      ]
+    },
+    {
+      "date": "2024-02",
+      "type": "filing",
+      "trial": "krystal-1",
+      "note": "FDA accepts sNDA for priority review of adagrasib + cetuximab in KRAS G12C mCRC; PDUFA June 21, 2024.",
+      "sources": [
+        {
+          "url": "https://www.targetedonc.com/view/krystal-12-study-of-adagrasib-meets-primary-end-point-in-kras-g12c-nsclc",
+          "source_type": "other"
+        }
+      ]
+    },
+    {
+      "date": "2024-06-21",
+      "type": "accelerated_approval",
+      "trial": "krystal-1",
+      "note": "FDA accelerated approval of adagrasib + cetuximab for previously treated KRAS G12C locally advanced/metastatic colorectal cancer (ORR 34%).",
+      "sources": [
+        {
+          "url": "https://news.bms.com/news/details/2024/Bristol-Myers-Squibb-Announces-U.S.-FDA-Accelerated-Approval-of-KRAZATI-adagrasib-in-Combination-with-Cetuximab...",
+          "source_type": "press_release"
+        },
+        {
+          "url": "https://ascopost.com/news/june-2024/fda-grants-accelerated-approval-to-adagrasib-with-cetuximab-for-kras-g12c-mutated-colorectal-cancer/",
+          "source_type": "other"
+        }
+      ]
+    },
+    {
+      "date": "2024-06",
+      "type": "data_readout",
+      "trial": "krystal-12",
+      "note": "KRYSTAL-12 confirmatory Phase 3 positive readout in NSCLC (PFS HR 0.58); supports Dec 2022 accelerated approval.",
+      "sources": [
+        {
+          "url": "https://dailynews.ascopubs.org/do/krystal-12-shows-pfs-benefit-adagrasib-over-docetaxel-previously-treated-advanced-kras",
+          "source_type": "other"
+        }
+      ]
+    },
+    {
+      "date": "2026",
+      "type": "data_readout",
+      "trial": "krystal-10",
+      "note": "KRYSTAL-10 confirmatory Phase 3 in CRC fails dual primary endpoints (PFS and OS); CRC accelerated approval at risk (ESMO GI 2026).",
+      "sources": [
+        {
+          "url": "https://dailyreporter.esmo.org/esmo-gastrointestinal-cancers-congress-2026/news/adagrasib-plus-cetuximab-fails-to-outperform-chemotherapy-in-kras-g12c-mutated-metastatic-colorectal-cancer",
+          "source_type": "other"
+        },
+        {
+          "url": "https://www.onclive.com/view/adagrasib-plus-cetuximab-misses-os-pfs-end-points-in-pretreated-kras-g12c-mutated-crc",
+          "source_type": "other"
+        }
+      ]
+    }
+  ],
+  "efficacy": [
+    {
+      "trial": "krystal-1",
+      "phase": "Phase 2",
+      "endpoint": "ORR (NSCLC registrational cohort, n=112)",
+      "value": 43,
+      "unit": "% (95% CI 34-53)",
+      "role": "primary",
+      "met": true,
+      "comparator": null,
+      "note": "Basis of NSCLC accelerated approval.",
+      "sources": [
+        {
+          "url": "https://www.onclive.com/view/fda-approves-adagrasib-for-locally-advanced-or-metastatic-kras-g12-nsclc",
+          "source_type": "other"
+        },
+        {
+          "url": "https://www.ons.org/publications-research/voice/news-views/12-2022/fda-grants-accelerated-approval-adagrasib-kras-g12c",
+          "source_type": "other"
+        }
+      ]
+    },
+    {
+      "trial": "krystal-1",
+      "phase": "Phase 2",
+      "endpoint": "Disease control rate (NSCLC)",
+      "value": 80,
+      "unit": "% (95% CI 71-87)",
+      "role": "secondary",
+      "met": null,
+      "comparator": null,
+      "note": null,
+      "sources": [
+        {
+          "url": "https://www.onclive.com/view/fda-approves-adagrasib-for-locally-advanced-or-metastatic-kras-g12-nsclc",
+          "source_type": "other"
+        }
+      ]
+    },
+    {
+      "trial": "krystal-1",
+      "phase": "Phase 2",
+      "endpoint": "Median duration of response (NSCLC)",
+      "value": 8.5,
+      "unit": "months",
+      "role": "secondary",
+      "met": null,
+      "comparator": null,
+      "note": null,
+      "sources": [
+        {
+          "url": "https://www.onclive.com/view/fda-approves-adagrasib-for-locally-advanced-or-metastatic-kras-g12-nsclc",
+          "source_type": "other"
+        }
+      ]
+    },
+    {
+      "trial": "krystal-1",
+      "phase": "Phase 1/2",
+      "endpoint": "Median OS (NSCLC pooled, n=132, 2-year analysis)",
+      "value": 14.1,
+      "unit": "months",
+      "role": "exploratory",
+      "met": null,
+      "comparator": null,
+      "note": "1-year OS 52.8%; 2-year OS 31.3%; median PFS 6.9 months; median DOR 12.4 months.",
+      "sources": [
+        {
+          "url": "https://www.iaslc.org/iaslc-news/press-release/krystal-1-trial-finds-adagrasib-demonstrates-durable-clinical-activity",
+          "source_type": "other"
+        }
+      ]
+    },
+    {
+      "trial": "krystal-1",
+      "phase": "Phase 2",
+      "endpoint": "Intracranial ORR (NSCLC CNS subset)",
+      "value": 33.3,
+      "unit": "% (95% CI 18.0-51.8)",
+      "role": "exploratory",
+      "met": null,
+      "comparator": null,
+      "note": null,
+      "sources": [
+        {
+          "url": "https://ascopubs.org/doi/full/10.1200/JCO.23.00046",
+          "source_type": "journal"
+        },
+        {
+          "url": "https://www.ajmc.com/view/in-krystal-1-adagrasib-for-nsclc-has-43-response-rate",
+          "source_type": "other"
+        }
+      ]
+    },
+    {
+      "trial": "krystal-1",
+      "phase": "Phase 2",
+      "endpoint": "ORR (CRC monotherapy, n=42)",
+      "value": 19,
+      "unit": "%",
+      "role": "exploratory",
+      "met": null,
+      "comparator": null,
+      "note": "DCR 73.8%; median PFS 5.6 months; median OS 12.2 months.",
+      "sources": [
+        {
+          "url": "https://www.tandfonline.com/doi/full/10.1080/14796694.2025.2524311",
+          "source_type": "journal"
+        }
+      ]
+    },
+    {
+      "trial": "krystal-1",
+      "phase": "Phase 2",
+      "endpoint": "ORR (CRC + cetuximab, n=94, BICR)",
+      "value": 34,
+      "unit": "% (95% CI 25-45)",
+      "role": "primary",
+      "met": true,
+      "comparator": null,
+      "note": "Basis of CRC accelerated approval; all partial responses.",
+      "sources": [
+        {
+          "url": "https://aacrjournals.org/cancerdiscovery/article/14/6/982/745540/Efficacy-and-Safety-of-Adagrasib-plus-Cetuximab-in",
+          "source_type": "journal"
+        },
+        {
+          "url": "https://news.bms.com/news/details/2024/Bristol-Myers-Squibb-Announces-U.S.-FDA-Accelerated-Approval-of-KRAZATI-adagrasib-in-Combination-with-Cetuximab...",
+          "source_type": "press_release"
+        }
+      ]
+    },
+    {
+      "trial": "krystal-1",
+      "phase": "Phase 2",
+      "endpoint": "Median OS (CRC + cetuximab)",
+      "value": 15.9,
+      "unit": "months (95% CI 11.8-18.8)",
+      "role": "secondary",
+      "met": null,
+      "comparator": null,
+      "note": "DCR 85.1%; median PFS 6.9 months; median DOR 5.8 months.",
+      "sources": [
+        {
+          "url": "https://aacrjournals.org/cancerdiscovery/article/14/6/982/745540/Efficacy-and-Safety-of-Adagrasib-plus-Cetuximab-in",
+          "source_type": "journal"
+        }
+      ]
+    },
+    {
+      "trial": "krystal-1",
+      "phase": "Phase 2",
+      "endpoint": "ORR (PDAC cohort)",
+      "value": 33.3,
+      "unit": "%",
+      "role": "exploratory",
+      "met": null,
+      "comparator": null,
+      "note": "DCR 81.0%.",
+      "sources": [
+        {
+          "url": "https://ascopubs.org/doi/10.1200/JCO.23.00434",
+          "source_type": "journal"
+        },
+        {
+          "url": "https://www.cancernetwork.com/view/adagrasib-shows-meaningful-activity-in-kras-g12c-mutated-solid-tumors",
+          "source_type": "other"
+        }
+      ]
+    },
+    {
+      "trial": "krystal-1",
+      "phase": "Phase 2",
+      "endpoint": "ORR (biliary tract cancer cohort)",
+      "value": 41.7,
+      "unit": "%",
+      "role": "exploratory",
+      "met": null,
+      "comparator": null,
+      "note": "DCR 91.7%.",
+      "sources": [
+        {
+          "url": "https://ascopubs.org/doi/10.1200/JCO.23.00434",
+          "source_type": "journal"
+        }
+      ]
+    },
+    {
+      "trial": "krystal-7",
+      "phase": "Phase 2",
+      "endpoint": "ORR (1L NSCLC, all patients)",
+      "value": 44,
+      "unit": "% (95% CI 36-53)",
+      "role": "primary",
+      "met": null,
+      "comparator": null,
+      "note": "Single-arm; no pre-specified success threshold reported. DCR 81%.",
+      "sources": [
+        {
+          "url": "https://www.targetedonc.com/view/adagrasib-plus-pembro-shows-promising-first-line-activity-in-kras-g12c-mutant-nsclc",
+          "source_type": "other"
+        },
+        {
+          "url": "https://ascopubs.org/doi/10.1200/JCO.2025.43.16_suppl.8500",
+          "source_type": "journal"
+        }
+      ]
+    },
+    {
+      "trial": "krystal-7",
+      "phase": "Phase 2",
+      "endpoint": "ORR (PD-L1 >=50% subgroup, n=54)",
+      "value": 59.3,
+      "unit": "% (95% CI 45.0-72.4)",
+      "role": "exploratory",
+      "met": null,
+      "comparator": null,
+      "note": "Median DOR 26.3 months.",
+      "sources": [
+        {
+          "url": "https://ascopubs.org/doi/10.1200/JCO.2025.43.16_suppl.8500",
+          "source_type": "journal"
+        },
+        {
+          "url": "https://www.jto.org/article/S1556-0864(25)00200-X/fulltext",
+          "source_type": "journal"
+        }
+      ]
+    },
+    {
+      "trial": "krystal-12",
+      "phase": "Phase 3",
+      "endpoint": "PFS by BICR",
+      "value": 5.5,
+      "unit": "months (median)",
+      "role": "primary",
+      "met": true,
+      "comparator": "docetaxel (median 3.8 months); HR 0.58 (95% CI 0.45-0.76), p<0.0001",
+      "note": null,
+      "sources": [
+        {
+          "url": "https://ascopubs.org/doi/10.1200/JCO.2024.42.17_suppl.LBA8509",
+          "source_type": "journal"
+        },
+        {
+          "url": "https://dailynews.ascopubs.org/do/krystal-12-shows-pfs-benefit-adagrasib-over-docetaxel-previously-treated-advanced-kras",
+          "source_type": "other"
+        }
+      ]
+    },
+    {
+      "trial": "krystal-12",
+      "phase": "Phase 3",
+      "endpoint": "ORR",
+      "value": 32,
+      "unit": "%",
+      "role": "secondary",
+      "met": true,
+      "comparator": "docetaxel (9%)",
+      "note": "Statistically significant improvement.",
+      "sources": [
+        {
+          "url": "https://www.targetedonc.com/view/adagrasib-demonstrates-superiority-in-kras-g12c-nsclc",
+          "source_type": "other"
+        }
+      ]
+    },
+    {
+      "trial": "krystal-10",
+      "phase": "Phase 3",
+      "endpoint": "PFS by BICR",
+      "value": 7.5,
+      "unit": "months (median)",
+      "role": "primary",
+      "met": false,
+      "comparator": "chemotherapy (median 8.1 months)",
+      "note": "Co-primary endpoint not met.",
+      "sources": [
+        {
+          "url": "https://www.onclive.com/view/adagrasib-plus-cetuximab-misses-os-pfs-end-points-in-pretreated-kras-g12c-mutated-crc",
+          "source_type": "other"
+        },
+        {
+          "url": "https://dailyreporter.esmo.org/esmo-gastrointestinal-cancers-congress-2026/news/adagrasib-plus-cetuximab-fails-to-outperform-chemotherapy-in-kras-g12c-mutated-metastatic-colorectal-cancer",
+          "source_type": "other"
+        }
+      ]
+    },
+    {
+      "trial": "krystal-10",
+      "phase": "Phase 3",
+      "endpoint": "Overall survival",
+      "value": 21.6,
+      "unit": "months (median)",
+      "role": "primary",
+      "met": false,
+      "comparator": "chemotherapy (median 21.7 months)",
+      "note": "Co-primary endpoint not met.",
+      "sources": [
+        {
+          "url": "https://www.onclive.com/view/adagrasib-plus-cetuximab-misses-os-pfs-end-points-in-pretreated-kras-g12c-mutated-crc",
+          "source_type": "other"
+        },
+        {
+          "url": "https://oncodaily.com/oncolibrary/gastrointestinal-oncology/krystal-10",
+          "source_type": "other"
+        }
+      ]
+    },
+    {
+      "trial": "krystal-10",
+      "phase": "Phase 3",
+      "endpoint": "ORR",
+      "value": 47,
+      "unit": "% (95% CI 40-53)",
+      "role": "secondary",
+      "met": null,
+      "comparator": "chemotherapy (16%, 95% CI 11-21)",
+      "note": "Numerically higher but overall trial did not meet primary endpoints.",
+      "sources": [
+        {
+          "url": "https://www.onclive.com/view/adagrasib-plus-cetuximab-misses-os-pfs-end-points-in-pretreated-kras-g12c-mutated-crc",
+          "source_type": "other"
+        }
+      ]
+    }
+  ],
+  "discontinuation": null,
+  "_verification": {
+    "status": "draft-unverified",
+    "note": "Auto-authored by claude/claude-opus-4-8; trial skeleton fields (phases, dates, sponsor, status) merged from ClinicalTrials.gov. Provenance-based trust: source_type per data point signals confidence. Run npm run validate."
+  }
+}

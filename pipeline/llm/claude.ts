@@ -80,6 +80,7 @@ export class ClaudeProvider implements LlmProvider {
       const message = (await this.client.messages.create(
         params as unknown as Anthropic.MessageCreateParamsNonStreaming
       )) as Anthropic.Message;
+      this.logWebTools(message);
       if (message.stop_reason === "pause_turn") {
         messages.push({ role: "assistant", content: message.content });
         continue;
@@ -87,5 +88,16 @@ export class ClaudeProvider implements LlmProvider {
       return textOf(message);
     }
     throw new Error("Claude research: exceeded max web-tool iterations");
+  }
+
+  // Surface the model-generated web queries/fetches (server_tool_use blocks) so
+  // the research step is auditable.
+  private logWebTools(message: Anthropic.Message): void {
+    for (const b of message.content as Array<Record<string, any>>) {
+      if (b?.type === "server_tool_use") {
+        const arg = b.input?.query ?? b.input?.url ?? JSON.stringify(b.input);
+        console.error(`[research]   ${b.name}: ${arg}`);
+      }
+    }
   }
 }
