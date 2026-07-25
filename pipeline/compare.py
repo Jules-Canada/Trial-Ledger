@@ -71,9 +71,11 @@ def main() -> None:
             cost = provider.cost_usd() if hasattr(provider, "cost_usd") else 0.0
             rows.append((model, cost, provider.usage.calls, _stats(record), out.name, None))
         except Exception as e:  # one model failing shouldn't kill the run
+            # A failed run still spent tokens/searches — report the real cost.
             calls = getattr(getattr(provider, "usage", None), "calls", 0)
-            rows.append((model, 0.0, calls, None, None, str(e)[:90]))
-            print(f"[compare] {model} FAILED: {e}", file=sys.stderr)
+            cost = provider.cost_usd() if hasattr(provider, "cost_usd") else 0.0
+            rows.append((model, cost, calls, None, None, str(e)[:90]))
+            print(f"[compare] {model} FAILED (${cost:.2f} spent): {e}", file=sys.stderr)
 
     # Comparison table
     print("\n" + "=" * 74)

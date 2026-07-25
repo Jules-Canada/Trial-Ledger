@@ -88,6 +88,9 @@ _WEB_TOOLS = [
     {"type": "web_fetch_20260209", "name": "web_fetch"},
 ]
 _MAX_TOKENS = 16000
+# Extraction needs headroom for adaptive thinking on a large research digest
+# PLUS the full JSON record; too small a cap yields an empty (all-thinking) reply.
+_EXTRACT_MAX_TOKENS = 32000
 _MAX_RESEARCH_TURNS = 6
 
 # Pricing in USD per 1M tokens (input, output) — see the claude-api model table.
@@ -172,7 +175,10 @@ class ClaudeProvider(LlmProvider):
             f"JSON Schema:\n{json.dumps(schema)}"
         )
         messages: list = [{"role": "user", "content": instruction}]
-        base: dict = {"model": self.model, "max_tokens": _MAX_TOKENS, "thinking": {"type": "adaptive"}}
+        # Generous output budget: a full record is ~6k tokens, and adaptive
+        # thinking on a large digest can consume a lot before any text is emitted
+        # — too small a cap yields an EMPTY response (all budget spent thinking).
+        base: dict = {"model": self.model, "max_tokens": _EXTRACT_MAX_TOKENS, "thinking": {"type": "adaptive"}}
         if system:
             base["system"] = system
 
@@ -181,10 +187,16 @@ class ClaudeProvider(LlmProvider):
             response = self.client.messages.create(messages=messages, **base)
             self._record(response)
             raw = _text_of(response)
-            js = _extract_json(raw)
+            stop = getattr(response, "stop_reason", None)
+            if not raw:
+                # Empty text — usually max_tokens hit during thinking. A same-size
+                # retry won't help; report the real cause, not a JSON-parse error.
+                last_err = RuntimeError(f"empty response (stop_reason={stop})")
+                print(f"[extract] empty response (stop_reason={stop})", file=sys.stderr)
+                continue
             try:
-                data: T = output_model.model_validate_json(js)
-                return LlmResult(data=data, raw=js, provider=self.name, model=self.model)
+                data: T = output_model.model_validate_json(_extract_json(raw))
+                return LlmResult(data=data, raw=raw, provider=self.name, model=self.model)
             except ValidationError as e:
                 last_err = e
                 if attempt == 0:
@@ -195,7 +207,7 @@ class ClaudeProvider(LlmProvider):
                             f"That JSON failed schema validation:\n{e}\n\n"
                             "Return a corrected JSON object only.")},
                     ]
-        raise RuntimeError(f"extract: response failed validation after retry: {last_err}")
+        raise RuntimeError(f"extract: failed after retry: {last_err}")
 
     def research(
         self,
