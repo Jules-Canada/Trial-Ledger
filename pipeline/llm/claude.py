@@ -188,7 +188,11 @@ class ClaudeProvider(LlmProvider):
 
         last_err: Optional[Exception] = None
         for attempt in range(2):
-            response = self.client.messages.create(messages=messages, **base)
+            # Stream to avoid the SDK's non-streaming >10-min guard: a big digest
+            # + 32k budget can run long, and a non-streamed call aborts AFTER
+            # spending the tokens. get_final_message() gives the same Message.
+            with self.client.messages.stream(messages=messages, **base) as stream:
+                response = stream.get_final_message()
             self._record(response)
             raw = _text_of(response)
             stop = getattr(response, "stop_reason", None)
@@ -254,7 +258,10 @@ class ClaudeProvider(LlmProvider):
             }
             if container:
                 params["container"] = container
-            message = self.client.messages.create(**params)
+            # Stream: research turns run server-side web tools and can exceed the
+            # non-streaming 10-min ceiling (the failure that wasted spend before).
+            with self.client.messages.stream(**params) as stream:
+                message = stream.get_final_message()
             self._record(message)
             self._log_web_tools(message)
             c = getattr(message, "container", None)

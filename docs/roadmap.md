@@ -125,13 +125,14 @@ model-agnostic/compare work a session ran up **$75.92** on the Anthropic Console
 ($71.52 token + $4.40 web search) — far above the in-pipeline estimate. Fix the
 below before spending more.
 
-- [ ] **STREAMING BUG (top priority).** The Claude adapter uses non-streaming
-      `messages.create`. Requests that run >10 min fail with "Streaming is
-      required for operations that may take longer than 10 minutes" — AFTER the
-      tokens are spent (mavacamten Opus: **$3.42, wasted**). This got worse once
-      extract `max_tokens` went to 32k. Fix: stream + `.get_final_message()` for
-      research and extract (the claude-api guidance says to stream any long /
-      high-max_tokens request). This likely caused a large share of wasted spend.
+- [x] **STREAMING BUG — FIXED.** The Claude adapter used non-streaming
+      `messages.create`; requests running >10 min failed with "Streaming is
+      required..." AFTER the tokens were spent (mavacamten Opus: $3.42 wasted).
+      Both call sites (research `_gather` and `extract`) now use
+      `messages.stream()` + `get_final_message()`, which returns the same Message
+      (content/usage/stop_reason/container intact) with no >10-min guard. Long
+      runs now complete instead of aborting. Verified on a tiny extract; a full
+      long-research run is the remaining confirmation.
 - [ ] **`cost_usd()` UNDER-reports** — trust the Console, not the printed number.
       Known gaps: web_fetch not priced; server-tool token consumption (fetched
       page text accumulates across research turns) probably undercounted; failed
