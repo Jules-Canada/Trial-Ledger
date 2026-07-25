@@ -78,6 +78,20 @@ from CLAUDE.md for that reason.
 - [ ] SHIFT (decided): move trust from human-verify-per-drug (can't scale to
       every drug in development) to provenance + automated confidence. Human
       review = optional spot-audit, not a gate. See docs/data-pipeline.md.
+- [x] Drug #6 added: tofersen (Biogen/Ionis) — first drug authored through the
+      Python pipeline. Neuro/rare (SOD1-ALS), antisense. Exercises a
+      surrogate-biomarker accelerated approval: VALOR Phase 3 clinical primary
+      (ALSFRS-R) MISSED (met=false) while biomarkers (CSF SOD1 -38%, plasma NfL
+      -67%) hit (met=true) → accelerated approval on NfL. The endpoint-agnostic
+      met? model captured "clinical miss, biomarker hit" cleanly.
+- [x] Pipeline finding (from tofersen) + fix: a single registered study can span
+      phases via parts (233AS101 = Phase 1/2 Parts A/B + Phase 3 Part C VALOR).
+      The LLM split it into two trial objects sharing one NCT; merge_prefill then
+      overwrote the Phase 1/2 part's phases to the registry's whole-study Phase 3,
+      contradicting its own efficacy rows. Fixed: merge_prefill now keeps the
+      LLM's phases on a registry mismatch and warns on duplicate NCTs. Open: a
+      cleaner model for multi-part registered studies (one trial spanning phases
+      vs. N part-objects) — decide before freezing the trial schema.
 - [ ] Add per-record confidence tiers to the validator (source_type -> tier;
       provenance report: primary-evidence vs topline coverage per record).
 - [ ] Backfill exact skeleton fields into the 4 drafts via prefill (optional).

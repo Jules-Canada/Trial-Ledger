@@ -1,0 +1,511 @@
+{
+  "id": "tofersen",
+  "identity": {
+    "name": "tofersen",
+    "codes": [
+      "BIIB067",
+      "233AS101"
+    ],
+    "brand_name": "QALSODY",
+    "sponsors": [
+      "Biogen",
+      "Ionis Pharmaceuticals"
+    ],
+    "modality": "antisense oligonucleotide (ASO)",
+    "target": "SOD1 mRNA (superoxide dismutase 1)",
+    "indications": [
+      "SOD1-ALS (amyotrophic lateral sclerosis with SOD1 mutation)"
+    ]
+  },
+  "trials": [
+    {
+      "id": "trial-1",
+      "name": "Phase 1-2 ascending-dose study (233AS101 Parts A/B)",
+      "registry_id": "NCT02623699",
+      "indication": "SOD1-ALS (symptomatic adults)",
+      "sponsor": "Biogen",
+      "phases": [
+        "1",
+        "2"
+      ],
+      "start_date": "2016-01-20",
+      "status": "completed",
+      "note": "Parts A/B of study 233AS101; randomized, double-blind, placebo-controlled single- and multiple-ascending-dose (20, 40, 60, 100 mg), 3:1 randomization, five intrathecal doses over 12 weeks. Published Miller et al., NEJM 2020. [skeleton fields from ClinicalTrials.gov]",
+      "sources": [
+        {
+          "url": "https://www.nejm.org/doi/full/10.1056/NEJMoa2003715",
+          "source_type": "journal"
+        },
+        {
+          "url": "https://cdn.clinicaltrials.gov/large-docs/99/NCT02623699/SAP_001.pdf",
+          "source_type": "registry"
+        }
+      ]
+    },
+    {
+      "id": "trial-2",
+      "name": "VALOR (233AS101 Part C)",
+      "registry_id": "NCT02623699",
+      "indication": "SOD1-ALS (symptomatic adults)",
+      "sponsor": "Biogen",
+      "phases": [
+        "3"
+      ],
+      "start_date": "2016-01-20",
+      "status": "completed",
+      "note": "Part C of study 233AS101; 28-week randomized, double-blind, placebo-controlled; 108 participants randomized 2:1 (n=72 tofersen; n=36 placebo); prognostic enrichment into faster-progressing (n=60) and slower-progressing (n=48) populations. Conducted March 2019-July 2021; 32 sites in 10 countries. Published Miller et al., NEJM Sept 2022. [skeleton fields from ClinicalTrials.gov]",
+      "sources": [
+        {
+          "url": "https://clinicaltrials.gov/study/NCT02623699",
+          "source_type": "registry"
+        },
+        {
+          "url": "https://investors.biogen.com/news-releases/news-release-details/biogen-announces-topline-results-tofersen-phase-3-study-and-its",
+          "source_type": "press_release"
+        },
+        {
+          "url": "https://www.nejm.org/doi/full/10.1056/NEJMoa2204705",
+          "source_type": "journal"
+        }
+      ]
+    },
+    {
+      "id": "trial-3",
+      "name": "Open-Label Extension (OLE) of VALOR - Long-Term Evaluation of BIIB067 (Tofersen)",
+      "registry_id": "NCT03070119",
+      "indication": "SOD1-ALS",
+      "sponsor": "Biogen",
+      "phases": [
+        "3"
+      ],
+      "start_date": "2017-03-08",
+      "status": "completed",
+      "note": "Open-label extension for VALOR completers; 95 of 108 VALOR participants enrolled. Pre-specified integrated analysis compared early-start vs delayed-start; supported U.S. accelerated approval. Long-term data published JAMA Neurology Dec 2025. [skeleton fields from ClinicalTrials.gov]",
+      "sources": [
+        {
+          "url": "https://investors.biogen.com/news-releases/news-release-details/biogen-announces-topline-results-tofersen-phase-3-study-and-its",
+          "source_type": "press_release"
+        },
+        {
+          "url": "https://cdn.clinicaltrials.gov/large-docs/19/NCT03070119/Prot_000.pdf",
+          "source_type": "registry"
+        }
+      ]
+    },
+    {
+      "id": "trial-4",
+      "name": "ATLAS",
+      "registry_id": "NCT04856982",
+      "indication": "Presymptomatic SOD1-ALS (clinically presymptomatic SOD1 variant carriers with elevated plasma NfL)",
+      "sponsor": "Biogen",
+      "phases": [
+        "3"
+      ],
+      "start_date": "2021-05-17",
+      "status": "ongoing",
+      "note": "FDA-designated confirmatory trial for the accelerated approval; randomized, placebo-controlled; ~150 adults; first interventional trial in presymptomatic ALS; NfL-triggered initiation. Estimated primary completion 2026. [skeleton fields from ClinicalTrials.gov]",
+      "sources": [
+        {
+          "url": "https://clinicaltrials.gov/study/NCT04856982",
+          "source_type": "registry"
+        },
+        {
+          "url": "https://investors.biogen.com/news-releases/news-release-details/fda-grants-accelerated-approval-qalsodytm-tofersen-sod1-als",
+          "source_type": "press_release"
+        },
+        {
+          "url": "https://link.springer.com/article/10.1007/s13311-022-01237-4",
+          "source_type": "journal"
+        }
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "date": "2013-09",
+      "type": "regulatory_event",
+      "trial": null,
+      "note": "Biogen-Ionis strategic research collaboration begins.",
+      "sources": [
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/875045/000087504519000006/Financial_Report.xlsx",
+          "source_type": "other"
+        }
+      ]
+    },
+    {
+      "date": "2018",
+      "type": "regulatory_event",
+      "trial": null,
+      "note": "Biogen licenses tofersen from Ionis.",
+      "sources": [
+        {
+          "url": "https://ir.ionis.com/news-releases/news-release-details/ionis-announces-fda-accepts-new-drug-application-and-grants",
+          "source_type": "press_release"
+        }
+      ]
+    },
+    {
+      "date": "2019-03",
+      "type": "phase_start",
+      "trial": "trial-2",
+      "note": "VALOR (Phase 3) conducted March 2019-July 2021.",
+      "sources": [
+        {
+          "url": "https://www.nejm.org/doi/full/10.1056/NEJMoa2204705",
+          "source_type": "journal"
+        }
+      ]
+    },
+    {
+      "date": "2020-07-09",
+      "type": "data_readout",
+      "trial": "trial-1",
+      "note": "Phase 1-2 results published in NEJM.",
+      "sources": [
+        {
+          "url": "https://www.nejm.org/doi/full/10.1056/NEJMoa2003715",
+          "source_type": "journal"
+        }
+      ]
+    },
+    {
+      "date": "2021",
+      "type": "phase_start",
+      "trial": "trial-4",
+      "note": "ATLAS (confirmatory Phase 3) launched/enrolling.",
+      "sources": [
+        {
+          "url": "https://link.springer.com/article/10.1007/s13311-022-01237-4",
+          "source_type": "journal"
+        }
+      ]
+    },
+    {
+      "date": "2021-10-17",
+      "type": "data_readout",
+      "trial": "trial-2",
+      "note": "VALOR topline announced: primary endpoint missed; positive secondary/biomarker and OLE trends.",
+      "sources": [
+        {
+          "url": "https://investors.biogen.com/news-releases/news-release-details/biogen-announces-topline-results-tofersen-phase-3-study-and-its",
+          "source_type": "press_release"
+        }
+      ]
+    },
+    {
+      "date": "2022-07-26",
+      "type": "filing",
+      "trial": null,
+      "note": "FDA accepts NDA, grants Priority Review; PDUFA action date Jan 25, 2023 (later extended into April 2023).",
+      "sources": [
+        {
+          "url": "https://ir.ionis.com/news-releases/news-release-details/ionis-announces-fda-accepts-new-drug-application-and-grants",
+          "source_type": "press_release"
+        }
+      ]
+    },
+    {
+      "date": "2022-09-22",
+      "type": "data_readout",
+      "trial": "trial-2",
+      "note": "VALOR + OLE results published in NEJM.",
+      "sources": [
+        {
+          "url": "https://www.nejm.org/doi/full/10.1056/NEJMoa2204705",
+          "source_type": "journal"
+        }
+      ]
+    },
+    {
+      "date": "2023-03-22",
+      "type": "regulatory_event",
+      "trial": null,
+      "note": "FDA Peripheral and Central Nervous System Drugs Advisory Committee votes unanimously 9-0 that observed NfL reduction is reasonably likely to predict clinical benefit.",
+      "sources": [
+        {
+          "url": "https://investors.biogen.com/news-releases/news-release-details/biogen-provides-update-fda-advisory-committee-meeting-tofersen",
+          "source_type": "press_release"
+        },
+        {
+          "url": "https://www.accessdata.fda.gov/drugsatfda_docs/nda/2023/215887Orig1s000IntegratedR.pdf",
+          "source_type": "drugs_at_fda"
+        }
+      ]
+    },
+    {
+      "date": "2023-04-25",
+      "type": "accelerated_approval",
+      "trial": null,
+      "note": "FDA grants accelerated approval of QALSODY (tofersen) for SOD1-ALS based on plasma-NfL surrogate; first FDA accelerated approval in ALS and first genetically targeted ALS therapy. Continued approval contingent on confirmatory ATLAS.",
+      "sources": [
+        {
+          "url": "https://investors.biogen.com/news-releases/news-release-details/fda-grants-accelerated-approval-qalsodytm-tofersen-sod1-als",
+          "source_type": "press_release"
+        },
+        {
+          "url": "https://alsnorthwest.org/tofersen/",
+          "source_type": "other"
+        }
+      ]
+    },
+    {
+      "date": "2024-05-30",
+      "type": "approval",
+      "trial": null,
+      "note": "European Commission grants marketing authorization under exceptional circumstances, with maintained orphan designation; requires further long-term efficacy/safety data.",
+      "sources": [
+        {
+          "url": "https://investors.biogen.com/news-releases/news-release-details/biogen-receives-european-commission-approval-qalsodyr-tofersen",
+          "source_type": "press_release"
+        },
+        {
+          "url": "https://www.als-mnd.org/support-for-pals-cals/approved-drugs/tofersen-qalsody/",
+          "source_type": "other"
+        }
+      ]
+    },
+    {
+      "date": "2025-12",
+      "type": "data_readout",
+      "trial": "trial-3",
+      "note": "JAMA Neurology publishes long-term VALOR/OLE data.",
+      "sources": [
+        {
+          "url": "https://investors.biogen.com/news-releases/news-release-details/journal-american-medical-association-jama-neurology-publishes",
+          "source_type": "press_release"
+        }
+      ]
+    },
+    {
+      "date": "2026",
+      "type": "data_readout",
+      "trial": "trial-4",
+      "note": "ATLAS primary completion expected.",
+      "sources": [
+        {
+          "url": "https://investors.biogen.com/news-releases/news-release-details/fda-grants-accelerated-approval-qalsodytm-tofersen-sod1-als",
+          "source_type": "press_release"
+        }
+      ]
+    }
+  ],
+  "efficacy": [
+    {
+      "trial": "trial-1",
+      "phase": "Phase 1/Phase 2",
+      "endpoint": "Safety/tolerability & PK",
+      "value": null,
+      "unit": "qualitative",
+      "role": "primary",
+      "met": null,
+      "sources": [
+        {
+          "url": "https://www.nejm.org/doi/full/10.1056/NEJMoa2003715",
+          "source_type": "journal"
+        },
+        {
+          "url": "https://eprints.whiterose.ac.uk/id/eprint/163772/",
+          "source_type": "other"
+        }
+      ],
+      "comparator": "placebo",
+      "note": "Descriptive safety endpoint, no pass/fail threshold. AEs included headache, procedural pain, post-lumbar-puncture syndrome, falls, back pain, CSF pleocytosis."
+    },
+    {
+      "trial": "trial-1",
+      "phase": "Phase 1/Phase 2",
+      "endpoint": "Change in CSF SOD1 protein concentration at day 85",
+      "value": null,
+      "unit": "concentration change",
+      "role": "secondary",
+      "met": null,
+      "sources": [
+        {
+          "url": "https://www.nejm.org/doi/full/10.1056/NEJMoa2003715",
+          "source_type": "journal"
+        },
+        {
+          "url": "https://advances.massgeneral.org/neuro/journal.aspx?id=1699",
+          "source_type": "other"
+        }
+      ],
+      "comparator": "placebo",
+      "note": "At 100 mg dose, CSF SOD1 reduced vs placebo; pooled day-85 between-group difference small/not significant, effect concentrated at 100 mg. Trial not powered for formal efficacy hypothesis."
+    },
+    {
+      "trial": "trial-1",
+      "phase": "Phase 1/Phase 2",
+      "endpoint": "Clinical function (ALSFRS-R)",
+      "value": null,
+      "unit": "ALSFRS-R points",
+      "role": "exploratory",
+      "met": null,
+      "sources": [
+        {
+          "url": "https://advances.massgeneral.org/neuro/journal.aspx?id=1699",
+          "source_type": "other"
+        }
+      ],
+      "comparator": "placebo",
+      "note": "Study explicitly not powered to test clinical effect."
+    },
+    {
+      "trial": "trial-2",
+      "phase": "Phase 3",
+      "endpoint": "Change from baseline to week 28 in ALSFRS-R total score (faster-progressing population)",
+      "value": 1.2,
+      "unit": "ALSFRS-R points (difference)",
+      "role": "primary",
+      "met": false,
+      "sources": [
+        {
+          "url": "https://www.nejm.org/doi/full/10.1056/NEJMoa2204705",
+          "source_type": "journal"
+        },
+        {
+          "url": "https://investors.biogen.com/news-releases/news-release-details/biogen-announces-topline-results-tofersen-phase-3-study-and-its",
+          "source_type": "press_release"
+        }
+      ],
+      "comparator": "placebo",
+      "note": "-6.98 (tofersen) vs -8.14 (placebo); difference 1.2 points (95% CI -3.2 to 5.5); P=0.97 (joint-rank analysis). Did not reach statistical significance."
+    },
+    {
+      "trial": "trial-2",
+      "phase": "Phase 3",
+      "endpoint": "Change in total CSF SOD1 protein (target engagement, faster-progressing)",
+      "value": 38,
+      "unit": "% reduction (between-group difference)",
+      "role": "secondary",
+      "met": true,
+      "sources": [
+        {
+          "url": "https://investors.biogen.com/news-releases/news-release-details/biogen-announces-topline-results-tofersen-phase-3-study-and-its",
+          "source_type": "press_release"
+        }
+      ],
+      "comparator": "placebo",
+      "note": "38% reduction (faster-progressing) and 26% (slower-progressing) favoring tofersen; target engagement."
+    },
+    {
+      "trial": "trial-2",
+      "phase": "Phase 3",
+      "endpoint": "Change in plasma neurofilament light chain (NfL, faster-progressing)",
+      "value": 67,
+      "unit": "% reduction (between-group difference)",
+      "role": "secondary",
+      "met": true,
+      "sources": [
+        {
+          "url": "https://investors.biogen.com/news-releases/news-release-details/biogen-announces-topline-results-tofersen-phase-3-study-and-its",
+          "source_type": "press_release"
+        },
+        {
+          "url": "https://www.alzforum.org/therapeutics/qalsodytm",
+          "source_type": "other"
+        }
+      ],
+      "comparator": "placebo",
+      "note": "67% (faster-progressing) and 48% (slower-progressing) between-group difference favoring tofersen; became surrogate basis for accelerated approval."
+    },
+    {
+      "trial": "trial-2",
+      "phase": "Phase 3",
+      "endpoint": "Respiratory function (Slow Vital Capacity, SVC, faster-progressing)",
+      "value": 7.9,
+      "unit": "% predicted (difference)",
+      "role": "secondary",
+      "met": null,
+      "sources": [
+        {
+          "url": "https://investors.biogen.com/news-releases/news-release-details/biogen-announces-topline-results-tofersen-phase-3-study-and-its",
+          "source_type": "press_release"
+        }
+      ],
+      "comparator": "placebo",
+      "note": "Favorable trend; not a formally powered/controlled significance claim."
+    },
+    {
+      "trial": "trial-2",
+      "phase": "Phase 3",
+      "endpoint": "Muscle strength (hand-held dynamometry, HHD megascore)",
+      "value": 0.02,
+      "unit": "HHD megascore (difference)",
+      "role": "exploratory",
+      "met": null,
+      "sources": [
+        {
+          "url": "https://investors.biogen.com/news-releases/news-release-details/biogen-announces-topline-results-tofersen-phase-3-study-and-its",
+          "source_type": "press_release"
+        }
+      ],
+      "comparator": "placebo",
+      "note": "Trend only."
+    },
+    {
+      "trial": "trial-2",
+      "phase": "Phase 3",
+      "endpoint": "Survival",
+      "value": null,
+      "unit": "time-to-event",
+      "role": "secondary",
+      "met": null,
+      "sources": [
+        {
+          "url": "https://investors.biogen.com/news-releases/news-release-details/biogen-announces-topline-results-tofersen-phase-3-study-and-its",
+          "source_type": "press_release"
+        }
+      ],
+      "comparator": "placebo",
+      "note": "Median time-to-event could not be estimated over 28-week window (too few events)."
+    },
+    {
+      "trial": "trial-3",
+      "phase": "Phase 3",
+      "endpoint": "Integrated clinical/respiratory/muscle strength/quality of life (early-start vs delayed-start)",
+      "value": null,
+      "unit": "various",
+      "role": "exploratory",
+      "met": null,
+      "sources": [
+        {
+          "url": "https://investors.biogen.com/news-releases/news-release-details/fda-grants-accelerated-approval-qalsodytm-tofersen-sod1-als",
+          "source_type": "press_release"
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1822791/000143774923014242/clnn20230331_10q.htm",
+          "source_type": "other"
+        }
+      ],
+      "comparator": "delayed-start (placebo then tofersen)",
+      "note": "Earlier tofersen initiation led to less decline across motor function, respiratory function, muscle strength, and QoL. Supportive, hypothesis-generating totality-of-evidence, not a pre-registered pass/fail primary."
+    },
+    {
+      "trial": "trial-4",
+      "phase": "Phase 3",
+      "endpoint": "Proportion of participants with emergence of clinically manifest ALS",
+      "value": null,
+      "unit": "proportion (%)",
+      "role": "primary",
+      "met": null,
+      "sources": [
+        {
+          "url": "https://investors.biogen.com/news-releases/news-release-details/journal-american-medical-association-jama-neurology-publishes",
+          "source_type": "press_release"
+        },
+        {
+          "url": "https://www.clinicaltrialsarena.com/news/news-adcom-als-accelerated-approval-tofersen/",
+          "source_type": "other"
+        }
+      ],
+      "comparator": "placebo",
+      "note": "Readout pending; estimated primary completion 2026."
+    }
+  ],
+  "discontinuation": null,
+  "_verification": {
+    "status": "draft-unverified",
+    "note": "Auto-authored by claude/claude-opus-4-8; trial skeleton fields (phases, dates, sponsor, status) merged from ClinicalTrials.gov. Provenance-based trust: source_type per data point signals confidence. Run tl-validate."
+  }
+}

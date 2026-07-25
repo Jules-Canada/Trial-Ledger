@@ -71,8 +71,29 @@ def get_provider() -> LlmProvider:
 def merge_prefill(trials: list[Trial]) -> int:
     """The LLM's trial skeleton (phases, dates, sponsor, status) is a guess; the
     registry is authoritative. For every trial with a real NCT, overwrite those
-    fields from ClinicalTrials.gov and keep the LLM's id/indication/note/name."""
+    fields from ClinicalTrials.gov and keep the LLM's id/indication/note/name.
+
+    Two guards keep the registry from clobbering deliberate LLM modeling:
+      - A registered study can span phases via parts (e.g. tofersen's 233AS101:
+        Phase 1/2 Parts A/B + Phase 3 Part C VALOR). If the LLM's phases and the
+        registry's don't overlap, the LLM is modeling a specific sub-part —
+        keep its phases rather than overwrite to the whole-study phase.
+      - Two trial objects sharing one NCT is a smell (usually that same
+        multi-part study); warn so a curator can check."""
     filled = 0
+
+    seen: dict[str, list[str]] = {}
+    for t in trials:
+        if is_nct(t.registry_id):
+            seen.setdefault(t.registry_id.strip(), []).append(t.id)
+    for nct, ids in seen.items():
+        if len(ids) > 1:
+            print(
+                f"[author] prefill: WARNING {len(ids)} trials share {nct}: {ids} "
+                "— likely one multi-part study; verify the split.",
+                file=sys.stderr,
+            )
+
     for t in trials:
         if not is_nct(t.registry_id):
             continue
@@ -83,7 +104,15 @@ def merge_prefill(trials: list[Trial]) -> int:
                 file=sys.stderr,
             )
             continue
-        t.phases = sk.phases
+        llm_phases = set(t.phases)
+        if llm_phases and not (llm_phases & set(sk.phases)):
+            print(
+                f"[author] prefill: {t.registry_id} phase mismatch "
+                f"(LLM {sorted(llm_phases)} vs registry {sk.phases}) — keeping LLM phases",
+                file=sys.stderr,
+            )
+        else:
+            t.phases = sk.phases
         t.start_date = sk.start_date
         t.status = sk.status
         if sk.sponsor:
