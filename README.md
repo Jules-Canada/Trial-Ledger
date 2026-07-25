@@ -46,6 +46,7 @@ tl-validate              # check every data/drugs/*.json against the schema
 | `src/` | React + D3 frontend (the Signal Ledger view) |
 | `src/types.generated.ts` | TS types generated from the schema — do not edit |
 | `data/drugs/*.json` | One curated record per drug (the source of truth) |
+| `data/drugs/*.research.txt` | Per-drug web-query trail from automated authoring (provenance) |
 | `data/drug-record.schema.json` | JSON Schema, emitted from `pipeline/schema.py` |
 | `pipeline/` | Offline Python pipeline (schema, validate, CT.gov prefill, LLM authoring) |
 | `pipeline/schema.py` | **Canonical drug-record schema** (Pydantic) — single source of truth |

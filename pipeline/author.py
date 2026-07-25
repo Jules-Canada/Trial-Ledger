@@ -217,6 +217,20 @@ def build_record(drug: str, provider: LlmProvider) -> dict[str, Any]:
     return _serialize(record)
 
 
+def write_research_log(path: Path, drug: str, provider: LlmProvider) -> Optional[Path]:
+    """Persist the model's web-query trail next to the record, for provenance /
+    reproducibility. Returns the path written, or None if nothing was logged."""
+    log = getattr(provider, "research_log", None)
+    if not log:
+        return None
+    header = (
+        f"# Research queries — {drug}\n"
+        f"# provider={provider.name} model={provider.model} | {len(log)} web tool calls\n\n"
+    )
+    path.write_text(header + "\n".join(log) + "\n")
+    return path
+
+
 def report_usage(provider: LlmProvider) -> None:
     """Print the per-run token tally and estimated cost (if the provider meters)."""
     usage = getattr(provider, "usage", None)
@@ -255,6 +269,9 @@ def main() -> None:
     out = OUT_DIR / f"{record['id']}.json"
     out.write_text(json.dumps(record, indent=2) + "\n")
     print(f"[author] wrote {out}", file=sys.stderr)
+    log_path = write_research_log(OUT_DIR / f"{record['id']}.research.txt", drug, provider)
+    if log_path:
+        print(f"[author] research log -> {log_path}", file=sys.stderr)
     report_usage(provider)
     print("[author] next: tl-validate", file=sys.stderr)
 

@@ -123,6 +123,10 @@ class ClaudeProvider(LlmProvider):
         self.client = client or anthropic.Anthropic()
         self.model = model or DEFAULT_MODEL
         self.usage = Usage()
+        # Auditable trail of every server-side web query/fetch the model ran,
+        # persisted per record (see author.py) so the evidence-gathering is
+        # reproducible — in keeping with the project's provenance ethos.
+        self.research_log: list[str] = []
 
     def _record(self, response) -> None:
         """Fold one API response's usage into the running tally."""
@@ -262,12 +266,15 @@ class ClaudeProvider(LlmProvider):
             return _text_of(message)
         raise RuntimeError("Claude research: exceeded max web-tool iterations")
 
-    @staticmethod
-    def _log_web_tools(message) -> None:
-        """Surface model-generated web queries (server_tool_use blocks) so the
-        research step is auditable."""
+    def _log_web_tools(self, message) -> None:
+        """Print AND persist the model-generated web queries (server_tool_use
+        blocks) so the research step is auditable and reproducible. The
+        code-execution wrapper is printed but kept out of the saved log; only the
+        actual web_search/web_fetch calls are recorded."""
         for b in message.content:
             if getattr(b, "type", None) == "server_tool_use":
                 inp = b.input or {}
                 arg = inp.get("query") or inp.get("url") or str(inp)
                 print(f"[research]   {b.name}: {arg}", file=sys.stderr)
+                if b.name in ("web_search", "web_fetch"):
+                    self.research_log.append(f"{b.name}: {arg}")

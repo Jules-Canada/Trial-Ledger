@@ -20,7 +20,7 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-from pipeline.author import build_record, get_provider, require_key
+from pipeline.author import build_record, get_provider, require_key, write_research_log
 
 ROOT = Path(__file__).resolve().parent.parent
 load_dotenv(ROOT / ".env.local", override=False)
@@ -68,6 +68,7 @@ def main() -> None:
             record = build_record(drug, provider)
             out = OUT_DIR / f"{record['id']}__{model}.json"
             out.write_text(json.dumps(record, indent=2) + "\n")
+            write_research_log(OUT_DIR / f"{record['id']}__{model}.research.txt", drug, provider)
             cost = provider.cost_usd() if hasattr(provider, "cost_usd") else 0.0
             rows.append((model, cost, provider.usage.calls, _stats(record), out.name, None))
         except Exception as e:  # one model failing shouldn't kill the run

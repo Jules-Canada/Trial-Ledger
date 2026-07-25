@@ -106,6 +106,12 @@ from CLAUDE.md for that reason.
       hit it), and the phase guard misfired on "Phase 1" vs "1" formatting.
       Next: re-run Sonnet to confirm the container fix; judge quality (compare
       still reports shape + cost, not correctness).
+- [x] Research-query provenance. The Claude adapter persists every server-side
+      web_search/web_fetch it ran; `tl-author` writes `data/drugs/<id>.research.txt`
+      (and `tl-compare` a per-model sidecar in `_compare/`). Makes the automated
+      evidence-gathering auditable + reproducible, matching the per-datapoint
+      provenance ethos. (Chatty models like Sonnet also make this a useful
+      efficiency signal — 68 queries vs Opus's ~4 for the same drug.)
 - [ ] Add per-record confidence tiers to the validator (source_type -> tier;
       provenance report: primary-evidence vs topline coverage per record).
 - [ ] Backfill exact skeleton fields into the 4 drafts via prefill (optional).
