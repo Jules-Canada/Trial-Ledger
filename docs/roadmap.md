@@ -92,6 +92,12 @@ from CLAUDE.md for that reason.
       LLM's phases on a registry mismatch and warns on duplicate NCTs. Open: a
       cleaner model for multi-part registered studies (one trial spanning phases
       vs. N part-objects) — decide before freezing the trial schema.
+- [x] Model-agnostic authoring + cost accounting. Model is selectable
+      (`--model` / `$LLM_MODEL`, default claude-opus-4-8); per-run token/cost is
+      printed and model-aware. `tl-compare` authors a drug across models (default
+      Opus vs Sonnet) into `_compare/` for high- vs low-cost output comparison.
+      Next: actually RUN comparisons and judge quality difference (compare today
+      reports shape + cost, not correctness).
 - [ ] Add per-record confidence tiers to the validator (source_type -> tier;
       provenance report: primary-evidence vs topline coverage per record).
 - [ ] Backfill exact skeleton fields into the 4 drafts via prefill (optional).

@@ -57,12 +57,15 @@ def authoring_prompt(drug: str) -> str:
     )
 
 
-def get_provider() -> LlmProvider:
+def get_provider(model: Optional[str] = None) -> LlmProvider:
+    """Select the provider (LLM_PROVIDER, default claude) and model. Model
+    precedence: explicit arg > LLM_MODEL env > the provider's default."""
     name = os.environ.get("LLM_PROVIDER", "claude")
+    model = model or os.environ.get("LLM_MODEL")
     if name == "claude":
         from pipeline.llm.claude import ClaudeProvider
 
-        return ClaudeProvider()
+        return ClaudeProvider(model=model)
     raise ValueError(
         f'Unknown LLM_PROVIDER "{name}". Only "claude" is implemented so far.'
     )
@@ -153,15 +156,8 @@ def _serialize(record: DrugRecord) -> dict[str, Any]:
     return clean(data)
 
 
-def main() -> None:
-    import json
-
-    drug = " ".join(sys.argv[1:]).strip()
-    if not drug:
-        print('Usage: tl-author "<drug name>"', file=sys.stderr)
-        sys.exit(1)
-
-    provider = get_provider()
+def require_key(provider: LlmProvider) -> None:
+    """Fail fast with guidance if the provider needs a key that isn't set."""
     if provider.name == "claude" and not os.environ.get("ANTHROPIC_API_KEY"):
         print(
             "Missing ANTHROPIC_API_KEY. Provide it one of these ways (never commit it):\n"
@@ -175,6 +171,11 @@ def main() -> None:
         )
         sys.exit(1)
 
+
+def build_record(drug: str, provider: LlmProvider) -> dict[str, Any]:
+    """Author one drug into a schema-valid record dict: LLM research+extract,
+    CT.gov skeleton merge, provenance stamp. No file I/O — callers decide where
+    it goes (tl-author -> data/drugs; tl-compare -> a scratch dir)."""
     brief = authoring_prompt(drug)
     print(
         f'[author] provider={provider.name} model={provider.model} drug="{drug}"',
@@ -201,25 +202,48 @@ def main() -> None:
             "Run tl-validate."
         ),
     )
+    return _serialize(record)
+
+
+def report_usage(provider: LlmProvider) -> None:
+    """Print the per-run token tally and estimated cost (if the provider meters)."""
+    usage = getattr(provider, "usage", None)
+    if usage is None:
+        return
+    print(
+        f"[author] usage: {usage.calls} API calls | "
+        f"in {usage.input_tokens:,} tok | out {usage.output_tokens:,} tok | "
+        f"cache_read {usage.cache_read_tokens:,} | web_searches {usage.web_searches}",
+        file=sys.stderr,
+    )
+    cost = getattr(provider, "cost_usd", None)
+    if cost is not None:
+        print(f"[author] estimated cost: ${cost():.2f}", file=sys.stderr)
+
+
+def main() -> None:
+    import argparse
+    import json
+
+    parser = argparse.ArgumentParser(
+        prog="tl-author",
+        description='Author a drug record. e.g. tl-author --model claude-sonnet-4-6 "sotorasib"',
+    )
+    parser.add_argument("--model", default=None, help="Model id (default: provider default / $LLM_MODEL)")
+    parser.add_argument("drug", nargs="+", help="Drug name (may be multiple words)")
+    args = parser.parse_args()
+    drug = " ".join(args.drug).strip()
+
+    provider = get_provider(model=args.model)
+    require_key(provider)
+
+    record = build_record(drug, provider)
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    out = OUT_DIR / f"{record.id}.json"
-    out.write_text(json.dumps(_serialize(record), indent=2) + "\n")
+    out = OUT_DIR / f"{record['id']}.json"
+    out.write_text(json.dumps(record, indent=2) + "\n")
     print(f"[author] wrote {out}", file=sys.stderr)
-
-    # Real per-run cost, not an estimate range (provider-specific; skip if absent).
-    usage = getattr(provider, "usage", None)
-    if usage is not None:
-        print(
-            f"[author] usage: {usage.calls} API calls | "
-            f"in {usage.input_tokens:,} tok | out {usage.output_tokens:,} tok | "
-            f"cache_read {usage.cache_read_tokens:,} | web_searches {usage.web_searches}",
-            file=sys.stderr,
-        )
-        cost = getattr(provider, "cost_usd", None)
-        if cost is not None:
-            print(f"[author] estimated cost: ${cost():.2f}", file=sys.stderr)
-
+    report_usage(provider)
     print("[author] next: tl-validate", file=sys.stderr)
 
 

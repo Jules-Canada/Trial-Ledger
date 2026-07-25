@@ -80,7 +80,7 @@ def _extract_json(text: str) -> str:
     return t[start : end + 1] if start != -1 and end != -1 else t
 
 
-MODEL = "claude-opus-4-8"
+DEFAULT_MODEL = "claude-opus-4-8"
 # Proven working tool versions (see the prior TypeScript pipeline run). Claude
 # drives these server-side, batching queries via programmatic tool calling.
 _WEB_TOOLS = [
@@ -90,11 +90,16 @@ _WEB_TOOLS = [
 _MAX_TOKENS = 16000
 _MAX_RESEARCH_TURNS = 6
 
-# Pricing in USD per 1M tokens (see the claude-api model table) plus the
-# per-request web-search rate. Used only for an end-of-run cost ESTIMATE;
-# web_fetch isn't billed per call, so it's not counted here.
+# Pricing in USD per 1M tokens (input, output) — see the claude-api model table.
+# Cache read/write are derived (0.1x / 1.25x of input). Used only for an
+# end-of-run cost ESTIMATE; web_fetch isn't billed per call.
 _PRICES = {
-    "claude-opus-4-8": {"input": 5.0, "output": 25.0, "cache_read": 0.5, "cache_write": 6.25},
+    "claude-opus-4-8": (5.0, 25.0),
+    "claude-opus-4-7": (5.0, 25.0),
+    "claude-opus-4-6": (5.0, 25.0),
+    "claude-sonnet-4-6": (3.0, 15.0),
+    "claude-haiku-4-5": (1.0, 5.0),
+    "claude-fable-5": (10.0, 50.0),
 }
 _WEB_SEARCH_USD = 0.01  # ~$10 per 1000 searches
 
@@ -105,11 +110,15 @@ def _text_of(message) -> str:
 
 class ClaudeProvider(LlmProvider):
     name = "claude"
-    model = MODEL
 
-    def __init__(self, client: Optional[anthropic.Anthropic] = None) -> None:
+    def __init__(
+        self,
+        client: Optional[anthropic.Anthropic] = None,
+        model: Optional[str] = None,
+    ) -> None:
         # Anthropic() resolves ANTHROPIC_API_KEY from the environment.
         self.client = client or anthropic.Anthropic()
+        self.model = model or DEFAULT_MODEL
         self.usage = Usage()
 
     def _record(self, response) -> None:
@@ -127,16 +136,18 @@ class ClaudeProvider(LlmProvider):
         )
 
     def cost_usd(self) -> float:
-        """Estimated USD cost of this run from the accumulated usage."""
-        p = _PRICES.get(MODEL)
-        if not p:
+        """Estimated USD cost of this run from the accumulated usage.
+        Returns 0.0 for a model with no pricing entry (unknown model)."""
+        price = _PRICES.get(self.model)
+        if not price:
             return 0.0
+        inp, outp = price
         u = self.usage
         token_cost = (
-            u.input_tokens * p["input"]
-            + u.output_tokens * p["output"]
-            + u.cache_read_tokens * p["cache_read"]
-            + u.cache_write_tokens * p["cache_write"]
+            u.input_tokens * inp
+            + u.output_tokens * outp
+            + u.cache_read_tokens * inp * 0.1
+            + u.cache_write_tokens * inp * 1.25
         ) / 1_000_000
         return token_cost + u.web_searches * _WEB_SEARCH_USD
 
@@ -161,7 +172,7 @@ class ClaudeProvider(LlmProvider):
             f"JSON Schema:\n{json.dumps(schema)}"
         )
         messages: list = [{"role": "user", "content": instruction}]
-        base: dict = {"model": MODEL, "max_tokens": _MAX_TOKENS, "thinking": {"type": "adaptive"}}
+        base: dict = {"model": self.model, "max_tokens": _MAX_TOKENS, "thinking": {"type": "adaptive"}}
         if system:
             base["system"] = system
 
@@ -173,7 +184,7 @@ class ClaudeProvider(LlmProvider):
             js = _extract_json(raw)
             try:
                 data: T = output_model.model_validate_json(js)
-                return LlmResult(data=data, raw=js, provider=self.name, model=MODEL)
+                return LlmResult(data=data, raw=js, provider=self.name, model=self.model)
             except ValidationError as e:
                 last_err = e
                 if attempt == 0:
@@ -214,7 +225,7 @@ class ClaudeProvider(LlmProvider):
         # Server-side tools run automatically; on pause_turn, re-send to resume.
         for _ in range(_MAX_RESEARCH_TURNS):
             message = self.client.messages.create(
-                model=MODEL,
+                model=self.model,
                 max_tokens=_MAX_TOKENS,
                 thinking={"type": "adaptive"},
                 tools=_WEB_TOOLS,

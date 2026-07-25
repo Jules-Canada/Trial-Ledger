@@ -75,5 +75,12 @@ data point keeps its `source_type` confidence signal.
 - Built: per-run usage + cost accounting. The provider tallies tokens and web
   searches across every call (`Usage`); `tl-author` prints token counts and an
   estimated USD cost at the end. Real number, ~$1–2/drug in practice.
+- Built: model-agnostic authoring. The model is selectable (`--model` /
+  `$LLM_MODEL`, default claude-opus-4-8); cost accounting is model-aware. The
+  provider abstraction is now agent- AND model-agnostic. `tl-compare` authors a
+  drug across several models (default Opus vs Sonnet) into `_compare/` and
+  prints a cost + record-shape side-by-side, for high- vs low-cost comparison.
 - TODO: batch mode (many drugs); per-record confidence tiers in the validator;
-  second provider adapter to exercise the abstraction.
+  a second *provider* adapter (non-Claude) to exercise the vendor abstraction;
+  quality scoring of compare outputs (right now it compares shape + cost, not
+  correctness).

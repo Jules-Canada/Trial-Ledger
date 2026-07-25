@@ -63,8 +63,15 @@ Start with `docs/drug-schema.md` (the data model) and
 | `tl-prefill NCT…` | no | fetch authoritative trial skeleton from ClinicalTrials.gov |
 | `tl-gen-types` | no | regenerate `src/types.generated.ts` + the JSON Schema |
 | `tl-author "<drug>"` | **yes** | auto-draft a drug record via an LLM |
+| `tl-compare "<drug>"` | **yes** | author the same drug across models; compare cost + output |
 
 (Each `tl-*` command is also runnable as `python -m pipeline.<module>`.)
+
+**Model selection.** The authoring model is configurable — `tl-author --model
+claude-sonnet-4-6 "<drug>"`, or set `$LLM_MODEL` (default `claude-opus-4-8`).
+Each run prints its token usage and estimated cost. `tl-compare` runs a drug
+through several models at once (default Opus vs Sonnet) into a `_compare/`
+scratch dir so you can diff high- vs low-cost output.
 
 ## The authoring pipeline (needs your own key)
 

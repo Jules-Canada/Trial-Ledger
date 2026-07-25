@@ -15,6 +15,7 @@ dependencies = [
 tl-validate = "pipeline.validate:main"
 tl-prefill = "pipeline.prefill:main"
 tl-author = "pipeline.author:main"
+tl-compare = "pipeline.compare:main"
 tl-gen-types = "pipeline.gen_types:main"
 
 [build-system]

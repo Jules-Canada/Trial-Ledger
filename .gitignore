@@ -11,6 +11,7 @@ dist-ssr
 __pycache__/
 *.egg-info/
 .pytest_cache/
+_compare/
 
 # secrets — never commit. .env.example is the tracked template.
 .env
