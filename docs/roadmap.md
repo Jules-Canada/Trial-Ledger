@@ -119,6 +119,37 @@ from CLAUDE.md for that reason.
 - [ ] CT.gov trial DISCOVERY by intervention name (find a drug's NCTs, not just
       fetch known ones) — the next automation after confidence tiers.
 
+## ⚠️ Cost & reliability — READ before running the pipeline again
+Authoring runs are real money and, right now, unreliable. During the
+model-agnostic/compare work a session ran up **$75.92** on the Anthropic Console
+($71.52 token + $4.40 web search) — far above the in-pipeline estimate. Fix the
+below before spending more.
+
+- [ ] **STREAMING BUG (top priority).** The Claude adapter uses non-streaming
+      `messages.create`. Requests that run >10 min fail with "Streaming is
+      required for operations that may take longer than 10 minutes" — AFTER the
+      tokens are spent (mavacamten Opus: **$3.42, wasted**). This got worse once
+      extract `max_tokens` went to 32k. Fix: stream + `.get_final_message()` for
+      research and extract (the claude-api guidance says to stream any long /
+      high-max_tokens request). This likely caused a large share of wasted spend.
+- [ ] **`cost_usd()` UNDER-reports** — trust the Console, not the printed number.
+      Known gaps: web_fetch not priced; server-tool token consumption (fetched
+      page text accumulates across research turns) probably undercounted; failed
+      / pre-metering runs weren't captured at all. The web-search line (~$0.01/
+      search) is roughly right; token cost is the driver and is under-estimated.
+- [ ] **Cost drivers = research + waste.** `web_fetch` pulls full article text
+      into context, accumulating across turns; big digests make extracts
+      expensive. A large fraction of the $76 went to runs that produced NOTHING
+      (messages.parse grammar failures, the streaming timeout, Sonnet fragility).
+- [ ] **Levers:** fix streaming; cap research turns/breadth or digest size
+      (chatty Sonnet did 68 searches vs Opus's ~4); default to Opus (Sonnet is
+      unreliable AND its per-token savings are eaten by inefficiency here);
+      smoke-test on ONE cheap drug before any multi-drug/multi-model sweep.
+- [ ] **Billing confound:** if Claude Code (the agent) bills to the same Console
+      org as the pipeline `ANTHROPIC_API_KEY`, part of the token cost is agent
+      time, not drug runs. The $4.40 web-search line is unambiguously pipeline.
+      Check per-key/workspace breakdown to separate the two.
+
 ## Schema findings from brepocitinib (need a decision before freezing)
 1. **Indication must be first-class.** A multi-indication drug's trials and
    efficacy each belong to a *disease*; today `indication` is only a drug-level
