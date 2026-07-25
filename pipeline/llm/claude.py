@@ -20,7 +20,7 @@ from typing import Any, Optional
 import anthropic
 from pydantic import ValidationError
 
-from pipeline.llm.provider import LlmProvider, LlmResult, T
+from pipeline.llm.provider import LlmProvider, LlmResult, T, Usage
 
 # Non-structural JSON Schema keywords — dropped to keep the schema we embed in
 # the prompt compact and readable (Pydantic still enforces these on the result).
@@ -90,6 +90,14 @@ _WEB_TOOLS = [
 _MAX_TOKENS = 16000
 _MAX_RESEARCH_TURNS = 6
 
+# Pricing in USD per 1M tokens (see the claude-api model table) plus the
+# per-request web-search rate. Used only for an end-of-run cost ESTIMATE;
+# web_fetch isn't billed per call, so it's not counted here.
+_PRICES = {
+    "claude-opus-4-8": {"input": 5.0, "output": 25.0, "cache_read": 0.5, "cache_write": 6.25},
+}
+_WEB_SEARCH_USD = 0.01  # ~$10 per 1000 searches
+
 
 def _text_of(message) -> str:
     return "".join(b.text for b in message.content if getattr(b, "type", None) == "text")
@@ -102,6 +110,35 @@ class ClaudeProvider(LlmProvider):
     def __init__(self, client: Optional[anthropic.Anthropic] = None) -> None:
         # Anthropic() resolves ANTHROPIC_API_KEY from the environment.
         self.client = client or anthropic.Anthropic()
+        self.usage = Usage()
+
+    def _record(self, response) -> None:
+        """Fold one API response's usage into the running tally."""
+        u = getattr(response, "usage", None)
+        if u is None:
+            return
+        st = getattr(u, "server_tool_use", None)
+        self.usage.add(
+            input_tokens=getattr(u, "input_tokens", 0) or 0,
+            output_tokens=getattr(u, "output_tokens", 0) or 0,
+            cache_read_tokens=getattr(u, "cache_read_input_tokens", 0) or 0,
+            cache_write_tokens=getattr(u, "cache_creation_input_tokens", 0) or 0,
+            web_searches=(getattr(st, "web_search_requests", 0) or 0) if st else 0,
+        )
+
+    def cost_usd(self) -> float:
+        """Estimated USD cost of this run from the accumulated usage."""
+        p = _PRICES.get(MODEL)
+        if not p:
+            return 0.0
+        u = self.usage
+        token_cost = (
+            u.input_tokens * p["input"]
+            + u.output_tokens * p["output"]
+            + u.cache_read_tokens * p["cache_read"]
+            + u.cache_write_tokens * p["cache_write"]
+        ) / 1_000_000
+        return token_cost + u.web_searches * _WEB_SEARCH_USD
 
     def extract(
         self,
@@ -131,6 +168,7 @@ class ClaudeProvider(LlmProvider):
         last_err: Optional[Exception] = None
         for attempt in range(2):
             response = self.client.messages.create(messages=messages, **base)
+            self._record(response)
             raw = _text_of(response)
             js = _extract_json(raw)
             try:
@@ -182,6 +220,7 @@ class ClaudeProvider(LlmProvider):
                 tools=_WEB_TOOLS,
                 messages=messages,
             )
+            self._record(message)
             self._log_web_tools(message)
             if message.stop_reason == "pause_turn":
                 messages.append({"role": "assistant", "content": message.content})

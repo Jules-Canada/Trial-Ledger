@@ -25,6 +25,36 @@ class LlmResult(Generic[T]):
     model: str
 
 
+@dataclass
+class Usage:
+    """Running tally of token/tool consumption across every API call in a run.
+    Vendor-neutral counters; providers translate their own response shapes into
+    add(). Cost is model-specific, so it's computed by the provider, not here."""
+
+    calls: int = 0
+    input_tokens: int = 0
+    output_tokens: int = 0
+    cache_read_tokens: int = 0
+    cache_write_tokens: int = 0
+    web_searches: int = 0
+
+    def add(
+        self,
+        *,
+        input_tokens: int = 0,
+        output_tokens: int = 0,
+        cache_read_tokens: int = 0,
+        cache_write_tokens: int = 0,
+        web_searches: int = 0,
+    ) -> None:
+        self.calls += 1
+        self.input_tokens += input_tokens
+        self.output_tokens += output_tokens
+        self.cache_read_tokens += cache_read_tokens
+        self.cache_write_tokens += cache_write_tokens
+        self.web_searches += web_searches
+
+
 class LlmProvider(ABC):
     #: Short provider id (e.g. "claude"), also used in the _verification stamp.
     name: str

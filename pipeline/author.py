@@ -205,7 +205,22 @@ def main() -> None:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     out = OUT_DIR / f"{record.id}.json"
     out.write_text(json.dumps(_serialize(record), indent=2) + "\n")
-    print(f"[author] wrote {out}\n[author] next: tl-validate", file=sys.stderr)
+    print(f"[author] wrote {out}", file=sys.stderr)
+
+    # Real per-run cost, not an estimate range (provider-specific; skip if absent).
+    usage = getattr(provider, "usage", None)
+    if usage is not None:
+        print(
+            f"[author] usage: {usage.calls} API calls | "
+            f"in {usage.input_tokens:,} tok | out {usage.output_tokens:,} tok | "
+            f"cache_read {usage.cache_read_tokens:,} | web_searches {usage.web_searches}",
+            file=sys.stderr,
+        )
+        cost = getattr(provider, "cost_usd", None)
+        if cost is not None:
+            print(f"[author] estimated cost: ${cost():.2f}", file=sys.stderr)
+
+    print("[author] next: tl-validate", file=sys.stderr)
 
 
 if __name__ == "__main__":

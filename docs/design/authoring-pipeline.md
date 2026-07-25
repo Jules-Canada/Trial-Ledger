@@ -69,5 +69,11 @@ data point keeps its `source_type` confidence signal.
   the registry; the LLM keeps id/indication/note/name.
 - Built: schema → frontend type generation (`tl-gen-types`) keeps
   `src/types.generated.ts` in sync with `pipeline/schema.py`.
+- Built: extraction uses prompt-embedded JSON + Pydantic validation (with one
+  corrective retry), not grammar-based structured output — the compiled grammar
+  for a schema this nested exceeds the API's size/union limits.
+- Built: per-run usage + cost accounting. The provider tallies tokens and web
+  searches across every call (`Usage`); `tl-author` prints token counts and an
+  estimated USD cost at the end. Real number, ~$1–2/drug in practice.
 - TODO: batch mode (many drugs); per-record confidence tiers in the validator;
   second provider adapter to exercise the abstraction.
