@@ -223,16 +223,27 @@ class ClaudeProvider(LlmProvider):
             }
         ]
         # Server-side tools run automatically; on pause_turn, re-send to resume.
+        # Claude drives the web tools from a code-execution container; when a turn
+        # pauses with pending tool uses, the resume MUST reference that container
+        # id or the API 400s ("container_id is required ..."). Chattier models
+        # (e.g. Sonnet) hit this path where a one-shot model (Opus) may not.
+        container: Optional[str] = None
         for _ in range(_MAX_RESEARCH_TURNS):
-            message = self.client.messages.create(
-                model=self.model,
-                max_tokens=_MAX_TOKENS,
-                thinking={"type": "adaptive"},
-                tools=_WEB_TOOLS,
-                messages=messages,
-            )
+            params: dict = {
+                "model": self.model,
+                "max_tokens": _MAX_TOKENS,
+                "thinking": {"type": "adaptive"},
+                "tools": _WEB_TOOLS,
+                "messages": messages,
+            }
+            if container:
+                params["container"] = container
+            message = self.client.messages.create(**params)
             self._record(message)
             self._log_web_tools(message)
+            c = getattr(message, "container", None)
+            if c is not None:
+                container = getattr(c, "id", None) or container
             if message.stop_reason == "pause_turn":
                 messages.append({"role": "assistant", "content": message.content})
                 continue

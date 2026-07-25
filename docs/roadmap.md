@@ -96,8 +96,16 @@ from CLAUDE.md for that reason.
       (`--model` / `$LLM_MODEL`, default claude-opus-4-8); per-run token/cost is
       printed and model-aware. `tl-compare` authors a drug across models (default
       Opus vs Sonnet) into `_compare/` for high- vs low-cost output comparison.
-      Next: actually RUN comparisons and judge quality difference (compare today
-      reports shape + cost, not correctness).
+- [x] First tl-compare run (sotorasib, Opus vs Sonnet) — findings:
+      (1) Opus authored a MUCH richer record than the hand-curated reference
+      (5 trials / 20 efficacy incl. the whole colorectal program vs 2 / 7) —
+      automated authoring is more exhaustive; open question is per-figure
+      accuracy vs breadth. (2) Surfaced + fixed two robustness bugs: research
+      pause_turn resume didn't pass the code-execution container id (chatty
+      models like Sonnet paused and 400'd; Opus finished in one turn and never
+      hit it), and the phase guard misfired on "Phase 1" vs "1" formatting.
+      Next: re-run Sonnet to confirm the container fix; judge quality (compare
+      still reports shape + cost, not correctness).
 - [ ] Add per-record confidence tiers to the validator (source_type -> tier;
       provenance report: primary-evidence vs topline coverage per record).
 - [ ] Backfill exact skeleton fields into the 4 drafts via prefill (optional).

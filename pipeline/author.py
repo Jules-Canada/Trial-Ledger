@@ -71,6 +71,15 @@ def get_provider(model: Optional[str] = None) -> LlmProvider:
     )
 
 
+def _phase_digits(phases: list[str]) -> set[str]:
+    """Normalize phase labels to their digits for comparison, so "Phase 1",
+    "1", and "Phase1" all read as {"1"} (and "Phase 1/2" as {"1","2"})."""
+    out: set[str] = set()
+    for p in phases:
+        out.update(re.findall(r"\d+", str(p)))
+    return out
+
+
 def merge_prefill(trials: list[Trial]) -> int:
     """The LLM's trial skeleton (phases, dates, sponsor, status) is a guess; the
     registry is authoritative. For every trial with a real NCT, overwrite those
@@ -107,11 +116,14 @@ def merge_prefill(trials: list[Trial]) -> int:
                 file=sys.stderr,
             )
             continue
-        llm_phases = set(t.phases)
-        if llm_phases and not (llm_phases & set(sk.phases)):
+        # Compare on normalized phase digits so a formatting difference
+        # ("Phase 1" vs "1") isn't treated as a real mismatch — only a genuine
+        # disagreement (e.g. LLM {1,2} vs registry {3}) keeps the LLM's phases.
+        llm_d, reg_d = _phase_digits(t.phases), _phase_digits(sk.phases)
+        if llm_d and reg_d and not (llm_d & reg_d):
             print(
                 f"[author] prefill: {t.registry_id} phase mismatch "
-                f"(LLM {sorted(llm_phases)} vs registry {sk.phases}) — keeping LLM phases",
+                f"(LLM {sorted(llm_d)} vs registry {sorted(reg_d)}) — keeping LLM phases",
                 file=sys.stderr,
             )
         else:
