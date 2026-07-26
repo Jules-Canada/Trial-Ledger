@@ -94,12 +94,13 @@ _MAX_TOKENS = 16000
 _EXTRACT_MAX_TOKENS = 32000
 _MAX_RESEARCH_TURNS = 6
 
-# Research profiles (RESEARCH_PROFILE env / research_profile arg). The cost
-# driver is web_fetch pulling full article text that accumulates across turns;
-# "focused" cuts that redundancy (snippet-first, fetch-only-when-needed, one
-# source per fact) while preserving DISCOVERY of distinct trials/indications —
-# the comprehensiveness that was the quality win. "thorough" is the original.
-DEFAULT_RESEARCH_PROFILE = "thorough"
+# Research profiles (RESEARCH_PROFILE env / research_profile arg).
+# A/B on sotorasib (see docs/roadmap.md): "focused" is cost-neutral vs "thorough"
+# ($1.40 vs $1.46 — for Opus the cost is search snippets + the extract call, NOT
+# web_fetch, so cutting fetches didn't save money) but produces cleaner, more
+# comprehensive records (found MORE trials + all indications, one source per
+# fact). So "focused" is the default; "thorough" (the original) stays available.
+DEFAULT_RESEARCH_PROFILE = "focused"
 _RESEARCH_INSTRUCTIONS = {
     "thorough": (
         "Research the following and produce a thorough, factual digest with "

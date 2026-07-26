@@ -112,6 +112,17 @@ from CLAUDE.md for that reason.
       evidence-gathering auditable + reproducible, matching the per-datapoint
       provenance ethos. (Chatty models like Sonnet also make this a useful
       efficiency signal — 68 queries vs Opus's ~4 for the same drug.)
+- [x] Research profiles (`RESEARCH_PROFILE`=`thorough`|`focused`) + A/B result.
+      Hypothesis was that web_fetch of full articles drove cost; **refuted for
+      Opus** — a `focused` sotorasib run (snippet-first, fetch-only-when-needed)
+      did ZERO fetches yet cost the same ($1.40 vs `thorough` $1.46). For Opus
+      the cost is search snippets + the extract call (digest + 32k schema +
+      thinking), ~$1.40/drug ≈ the floor; the earlier "wasteful research" was
+      really Sonnet (68 searches) + aborted runs (streaming) — both since fixed.
+      But `focused` produced a CLEANER, more comprehensive record (7 trials + all
+      3 indications vs thorough's 5 / verified's 2; key numbers accurate), so
+      **`focused` is now the default**. Next cost lever is prompt-caching the
+      static schema/system prefix across drugs in batch mode (only pays at scale).
 - [ ] Add per-record confidence tiers to the validator (source_type -> tier;
       provenance report: primary-evidence vs topline coverage per record).
 - [ ] Backfill exact skeleton fields into the 4 drafts via prefill (optional).
