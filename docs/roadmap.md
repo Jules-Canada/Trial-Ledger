@@ -131,8 +131,18 @@ below before spending more.
       Both call sites (research `_gather` and `extract`) now use
       `messages.stream()` + `get_final_message()`, which returns the same Message
       (content/usage/stop_reason/container intact) with no >10-min guard. Long
-      runs now complete instead of aborting. Verified on a tiny extract; a full
-      long-research run is the remaining confirmation.
+      runs now complete instead of aborting. Verified on a tiny extract AND
+      effectively on a real long run — a mavacamten run streamed through deep
+      research well past 10 min with no abort; it only died because the laptop
+      slept and severed the streaming connection (stream read timeout), which is
+      environmental, not the old bug.
+- [ ] **Operational: long runs need a stable connection.** A streamed authoring
+      run can take many minutes; if the machine sleeps or the network drops, the
+      stream read times out and the run dies (spend sunk). On a laptop, run with
+      `caffeinate -i python -m pipeline.author "<drug>"` to prevent idle sleep.
+      (A deeper fix would checkpoint the research digest so a dropped run resumes
+      without re-searching — not worth it yet; capping research breadth to keep
+      runs short is the better lever.)
 - [ ] **`cost_usd()` UNDER-reports** — trust the Console, not the printed number.
       Known gaps: web_fetch not priced; server-tool token consumption (fetched
       page text accumulates across research turns) probably undercounted; failed
