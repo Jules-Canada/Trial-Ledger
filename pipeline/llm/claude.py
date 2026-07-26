@@ -12,6 +12,7 @@ the schema in the prompt and validate the reply with Pydantic (see extract()).
 
 from __future__ import annotations
 
+import os
 import copy
 import json
 import sys
@@ -93,6 +94,41 @@ _MAX_TOKENS = 16000
 _EXTRACT_MAX_TOKENS = 32000
 _MAX_RESEARCH_TURNS = 6
 
+# Research profiles (RESEARCH_PROFILE env / research_profile arg). The cost
+# driver is web_fetch pulling full article text that accumulates across turns;
+# "focused" cuts that redundancy (snippet-first, fetch-only-when-needed, one
+# source per fact) while preserving DISCOVERY of distinct trials/indications —
+# the comprehensiveness that was the quality win. "thorough" is the original.
+DEFAULT_RESEARCH_PROFILE = "thorough"
+_RESEARCH_INSTRUCTIONS = {
+    "thorough": (
+        "Research the following and produce a thorough, factual digest with "
+        "source URLs for every claim. Plain prose, not JSON."
+    ),
+    "focused": (
+        "Research the following drug's clinical development and produce a "
+        "factual digest with a source URL for every claim. Plain prose, not JSON.\n"
+        "\n"
+        "Be efficient and prioritized — capture the development STORY, not an "
+        "exhaustive dossier:\n"
+        "- Focus on the pivotal/registrational trials (those supporting approvals "
+        "or that defined the program) and their PRIMARY plus key SECONDARY "
+        "endpoints, the phase, and whether each was met.\n"
+        "- Capture regulatory milestones (first-in-human, filings, "
+        "accelerated/full approvals, discontinuations) with dates.\n"
+        "- Cover EACH DISTINCT indication the drug was developed for — that "
+        "breadth is the signal we want.\n"
+        "- Prefer authoritative sources (FDA label, the pivotal-trial "
+        "publication, ClinicalTrials.gov). ONE good source per fact is enough — "
+        "don't corroborate the same number across many sources.\n"
+        "- Rely on search-result snippets for facts; open a full page "
+        "(web_fetch) ONLY when a specific number, date, or NCT you need is not "
+        "in the snippets.\n"
+        "- Don't enumerate every early-phase, combination, or minor sub-study "
+        "unless it's material to the story or a distinct indication."
+    ),
+}
+
 # Pricing in USD per 1M tokens (input, output) — see the claude-api model table.
 # Cache read/write are derived (0.1x / 1.25x of input). Used only for an
 # end-of-run cost ESTIMATE; web_fetch isn't billed per call.
@@ -118,10 +154,16 @@ class ClaudeProvider(LlmProvider):
         self,
         client: Optional[anthropic.Anthropic] = None,
         model: Optional[str] = None,
+        research_profile: Optional[str] = None,
     ) -> None:
         # Anthropic() resolves ANTHROPIC_API_KEY from the environment.
         self.client = client or anthropic.Anthropic()
         self.model = model or DEFAULT_MODEL
+        self.research_profile = (
+            research_profile
+            or os.environ.get("RESEARCH_PROFILE")
+            or DEFAULT_RESEARCH_PROFILE
+        )
         self.usage = Usage()
         # Auditable trail of every server-side web query/fetch the model ran,
         # persisted per record (see author.py) so the evidence-gathering is
@@ -232,16 +274,10 @@ class ClaudeProvider(LlmProvider):
         return self.extract(prompt=prompt, output_model=output_model, system=system)
 
     def _gather(self, brief: str) -> str:
-        messages = [
-            {
-                "role": "user",
-                "content": (
-                    "Research the following and produce a thorough, factual digest "
-                    "with source URLs for every claim. Plain prose, not JSON.\n\n"
-                    + brief
-                ),
-            }
-        ]
+        instruction = _RESEARCH_INSTRUCTIONS.get(
+            self.research_profile, _RESEARCH_INSTRUCTIONS[DEFAULT_RESEARCH_PROFILE]
+        )
+        messages = [{"role": "user", "content": f"{instruction}\n\n{brief}"}]
         # Server-side tools run automatically; on pause_turn, re-send to resume.
         # Claude drives the web tools from a code-execution container; when a turn
         # pauses with pending tool uses, the resume MUST reference that container

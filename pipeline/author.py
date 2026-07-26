@@ -223,9 +223,11 @@ def write_research_log(path: Path, drug: str, provider: LlmProvider) -> Optional
     log = getattr(provider, "research_log", None)
     if not log:
         return None
+    profile = getattr(provider, "research_profile", "?")
     header = (
         f"# Research queries — {drug}\n"
-        f"# provider={provider.name} model={provider.model} | {len(log)} web tool calls\n\n"
+        f"# provider={provider.name} model={provider.model} profile={profile} "
+        f"| {len(log)} web tool calls\n\n"
     )
     path.write_text(header + "\n".join(log) + "\n")
     return path
